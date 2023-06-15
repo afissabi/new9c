@@ -335,5 +335,6 @@ Route::group([
 Route::group(['middleware' => 'member'], function () {
     Route::get('/home-member', [MemberController::class, 'dashboard'])->name('home-member');
     Route::get('/last-register', [MemberController::class, 'lastRegis'])->name('last-register');
+    Route::get('/last-pay', [MemberController::class, 'lastPay'])->name('last-pembayaran');
 });
 

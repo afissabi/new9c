@@ -18,4 +18,9 @@ class M_pembayaran extends Model
 
     protected $dates = ["deleted_at"];
     public $timestamps = true;
+
+    public function reg()
+    {
+        return $this->belongsTo('App\Models\T_register', 'id_t_register');
+    }
 }

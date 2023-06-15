@@ -759,6 +759,7 @@ class FrontController extends Controller
     public function promoDaftar(Request $request)
     {
         $cek = M_pasien::where('email',$request->email)->first();
+        $id_reg = DB::table('t_register')->max('id_t_register') + 1;
         // $jam = $request->jam.':00';
         // $cekreg = T_register::where('id_promo',$request->promo)->where('id_klinik',$request->klinik)->where('id_pasien',$cek->id_pasien)->where('tanggal',$request->tanggal)->where('jam',$jam)->first();
 
@@ -769,7 +770,7 @@ class FrontController extends Controller
             $id_pasien = $cek->id_pasien;
         }else{
             $pasien = new M_pasien;
-            $id_pasien = M_pasien::max('id_pasien') + 1;
+            $id_pasien = DB::table('m_pasien')->max('id_pasien') + 1;
 
             // NAMBAH USER UNTUK MEMBER BARU
             // $member = new User();
@@ -814,15 +815,15 @@ class FrontController extends Controller
         if($cek){
             if($cekreg){
                 $reg = $cekreg;
-                $id_reg = $cekreg->id_t_register;
+                // $id_reg = $cekreg->id_t_register;
             }else{
                 $reg = new T_register();
-                $id_reg = T_register::max('id_t_register') + 1;
+                // $id_reg = T_register::max('id_t_register') + 1;
                 $reg->status = 0;
             }
         }else{
             $reg = new T_register();
-            $id_reg = T_register::max('id_t_register') + 1;
+            // $id_reg = T_register::max('id_t_register') + 1;
             $reg->status = 0;
         }
         
@@ -839,8 +840,9 @@ class FrontController extends Controller
         $metode = MetodeBayar::where('id_metode_pembayaran',$request->tipe_bayar)->first();
 
         $bayar = new M_pembayaran();
-        $bayar->id_t_register = $id_reg;
+        $bayar->id_t_register =  $id_reg;
         $bayar->tipe = $request->tipe_bayar;
+        $bayar->id_pasien = $id_pasien;
         $bayar->jenis_pembayaran = $metode->jenis_pembayaran;
         if($metode->jenis_pembayaran == 'CASH'){
             $bayar->nilai = str_replace('.', '', trim($request->total));
@@ -848,7 +850,7 @@ class FrontController extends Controller
         }else{
             $bayar->nilai = str_replace('.', '', trim($request->dp));
             $bayar->is_dp = 't';
-            $bayar->keterangan = 'Pembayaran Cicilan Promo ' . $metode->promo->judul_promo;
+            $bayar->keterangan = 'Pembayaran DP Cicilan Promo ' . $metode->promo->judul_promo;
         }
         
         $bayar->status = 0;
@@ -1460,6 +1462,8 @@ class FrontController extends Controller
     public function layananDaftar(Request $request)
     {
         $cek = M_pasien::where('email',$request->email)->first();
+        $id_reg = DB::table('t_register')->max('id_t_register') + 1;
+        
         // $jam = $request->jam.':00';
         // $cekreg = T_register::where('id_promo',$request->promo)->where('id_klinik',$request->klinik)->where('id_pasien',$cek->id_pasien)->where('tanggal',$request->tanggal)->where('jam',$jam)->first();
 
@@ -1470,7 +1474,7 @@ class FrontController extends Controller
             $id_pasien = $cek->id_pasien;
         }else{
             $pasien = new M_pasien;
-            $id_pasien = M_pasien::max('id_pasien') + 1;
+            $id_pasien = DB::table('m_pasien')->max('id_pasien') + 1;
 
             // NAMBAH USER UNTUK MEMBER BARU
             // $member = new User();
@@ -1515,15 +1519,15 @@ class FrontController extends Controller
         if($cek){
             if($cekreg){
                 $reg = $cekreg;
-                $id_reg = $cekreg->id_t_register;
+                // $id_reg = T_register::max('id_t_register') + 1;
             }else{
                 $reg = new T_register();
-                $id_reg = T_register::max('id_t_register') + 1;
+                // $id_reg = T_register::max('id_t_register') + 1;
                 $reg->status = 0;
             }
         }else{
             $reg = new T_register();
-            $id_reg = T_register::max('id_t_register') + 1;
+            // $id_reg = T_register::max('id_t_register') + 1;
             $reg->status = 0;
         }
         
@@ -1538,9 +1542,10 @@ class FrontController extends Controller
         
         
         $metode = MetodeBayar::where('id_metode_pembayaran',$request->tipe_bayar)->first();
-
+        
         $bayar = new M_pembayaran();
         $bayar->id_t_register = $id_reg;
+        $bayar->id_pasien = $id_pasien;
         $bayar->tipe = $request->tipe_bayar;
         $bayar->jenis_pembayaran = $metode->jenis_pembayaran;
         if($metode->jenis_pembayaran == 'CASH'){
@@ -1549,7 +1554,20 @@ class FrontController extends Controller
         }else{
             $bayar->nilai = str_replace('.', '', trim($request->dp));
             $bayar->is_dp = 't';
-            $bayar->keterangan = 'Pembayaran Cicilan Layanan ' . $metode->layanan->nama_layanan;
+            $bayar->keterangan = 'Pembayaran DP Cicilan Layanan ' . $metode->layanan->nama_layanan;
+            for ($j = 1; $j <= $request->tenor; $j++) {
+                $cicil = new M_pembayaran;
+                $cicil->id_t_register = $id_reg;
+                $cicil->id_pasien = $id_pasien;
+                $cicil->tipe = $request->tipe_bayar;
+                $cicil->jenis_pembayaran = $metode->jenis_pembayaran;
+                $cicil->nilai = str_replace('.', '', trim($request->cicilan));
+                $cicil->is_dp = 'f';
+                $cicil->status = 0;
+                $cicil->keterangan = 'Pembayaran Cicilan Ke-' . $j . ' Layanan ' . $metode->layanan->nama_layanan;
+                $cicil->cicilan_ke = $j;
+                $cicil->save();
+            }
         }
         
         $bayar->status = 0;

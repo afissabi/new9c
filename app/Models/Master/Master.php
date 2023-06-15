@@ -111,4 +111,51 @@ class Master extends Model
         ");
         
     }
+
+    public function scopeBayar($query, $pasien)
+    {
+        return \DB::select("
+            SELECT
+                mp.*,
+                tr.id_pasien
+            FROM
+                m_pembayaran mp
+                JOIN t_register tr ON tr.id_t_register = mp.id_t_register
+            WHERE
+                mp.deleted_at IS NULL
+                AND tr.deleted_at IS NULL
+                AND tr.id_pasien = $pasien
+                AND is_dp = 't'
+                AND mp.status = 0
+                OR
+                mp.deleted_at IS NULL
+                AND tr.deleted_at IS NULL
+                AND tr.id_pasien = $pasien
+                AND is_dp IS NULL
+                AND mp.status = 0
+        ");
+        
+    }
+
+    public function scopeCicilan($query, $pasien)
+    {
+        return \DB::select("
+            SELECT
+                mp.*,
+                tr.id_pasien 
+            FROM
+                m_pembayaran mp
+                JOIN t_register tr ON tr.id_t_register = mp.id_t_register 
+            WHERE
+                mp.deleted_at IS NULL 
+                AND tr.deleted_at IS NULL 
+                AND tr.id_pasien = $pasien
+                AND jenis_pembayaran = 'CICILAN'
+                AND is_dp = 'f'
+                AND mp.status = 0
+        ");
+        
+    }
+
+
 }
