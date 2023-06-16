@@ -129,9 +129,9 @@ class LoginController extends Controller
     public function loginMember(Request $request)
     {
         try {
-            // if(!$request['g-recaptcha-response']){
-            //     return $this->successJson("Oops, captchanya diisi dulu dong", 'Captcha Salah', 199);
-            // }
+            if(!$request['g-recaptcha-response']){
+                return $this->successJson("Oops, captchanya diisi dulu dong", 'Captcha Salah', 199);
+            }
             
             $this->checkRegisteredMember($request->username);
             
