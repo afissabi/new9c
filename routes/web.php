@@ -11,6 +11,7 @@ use App\Http\Controllers\LayananController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MemberLoginController;
 use App\Http\Controllers\pegawaiController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Website\ArtikelController;
@@ -222,6 +223,18 @@ Route::group(['middleware' => 'admin'], function () {
     });
 
     Route::group([
+        'prefix' => 'pembayaran',
+        'as' => 'pembayaran.',
+    ], function () {
+        Route::get('/', [PembayaranController::class, 'index'])->name('index');
+        Route::post('/datatable', [PembayaranController::class, 'datatable'])->name('store');
+        Route::post('/terima', [PembayaranController::class, 'Terima'])->name('approve');
+        Route::post('/tolak', [PembayaranController::class, 'Tolak'])->name('cancel');
+        Route::post('/bukti-bayar', [PembayaranController::class, 'BuktiBayar'])->name('view-bukti');
+        // Route::post('/hapus', [RegisterController::class, 'Hapus'])->name('destroy');
+    });
+
+    Route::group([
         'prefix' => 'promo-master',
         'as' => 'promo-master.',
     ], function () {
@@ -336,5 +349,7 @@ Route::group(['middleware' => 'member'], function () {
     Route::get('/home-member', [MemberController::class, 'dashboard'])->name('home-member');
     Route::get('/last-register', [MemberController::class, 'lastRegis'])->name('last-register');
     Route::get('/last-pay', [MemberController::class, 'lastPay'])->name('last-pembayaran');
+    Route::get('/bayar', [MemberController::class, 'Bayar'])->name('last-bayar');
+    Route::post('/konfirmasi-pembayaran', [MemberController::class, 'konfirBayar'])->name('konfirmasi-bayar');
 });
 

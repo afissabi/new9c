@@ -8,6 +8,8 @@ use App\Models\T_register;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use DB;
+use Image;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class MemberController extends Controller
@@ -137,7 +139,9 @@ class MemberController extends Controller
                             if($value->status == 0){
                                 $last .= '<span class="badge badge-warning mb-1 mt-3 text-dark" style="border-radius: 10px;">Status : Menunggu Pembayaran</span>';
                             } else if ($value->status == 1){
-                                $last .= '<span class="badge badge-warning mb-1 mt-3 text-dark" style="border-radius: 10px;">Status : Pembayaran Diterima</span>'; 
+                                $last .= '<span class="badge badge-primary mb-1 mt-3 text-dark" style="border-radius: 10px;">Status : Menunggu Konfirmasi Admin</span>'; 
+                            }else if ($value->status == 2){
+                                $last .= '<span class="badge badge-success mb-1 mt-3 text-dark" style="border-radius: 10px;">Status : Pembayaran Diterima</span>'; 
                             }
                             
                             $last .='</div>
@@ -145,8 +149,8 @@ class MemberController extends Controller
                     <div class="col-md-4">';
                     if($value->status == 0){
                         $last .= '
-                        <a href="" class="btn btn-danger mb-1" style="border-radius: 30px; font-size: 9px;">Lakukan Pembayaran</a>
-                        <a href="" class="btn btn-info mb-1" style="border-radius: 30px;font-size: 9px;">Konfirmasi Pembayaran</a>';
+                        <a href="javascript:void(0)" data-id_pembayaran="' . $value->id_pembayaran . '" class="btn btn-danger mb-1 bayar" style="border-radius: 30px; font-size: 9px;">Lakukan Pembayaran</a>
+                        <a href="javascript:void(0)" data-id_pembayaran="' . $value->id_pembayaran . '" class="btn btn-info mb-1 konfirm" style="border-radius: 30px;font-size: 9px;">Konfirmasi Pembayaran</a>';
                     }
                     $last .= '</div>
                 </div>
@@ -168,6 +172,8 @@ class MemberController extends Controller
                             if($value->status == 0){
                                 $cicil .= '<span class="badge badge-warning mb-1 mt-3 text-dark" style="border-radius: 10px;">Status : Menunggu Pembayaran</span>';
                             } else if ($value->status == 1){
+                                $cicil .= '<span class="badge badge-primary mb-1 mt-3 text-dark" style="border-radius: 10px;">Status : Menunggu Konfirmasi Admin</span>'; 
+                            } else if ($value->status == 2){
                                 $cicil .= '<span class="badge badge-warning mb-1 mt-3 text-dark" style="border-radius: 10px;">Status : Pembayaran Diterima</span>'; 
                             }
                             
@@ -176,8 +182,8 @@ class MemberController extends Controller
                     <div class="col-md-4">';
                     if($value->status == 0){
                         $cicil .= '
-                        <a href="" class="btn btn-danger mb-1" style="border-radius: 30px; font-size: 9px;">Lakukan Pembayaran</a>
-                        <a href="" class="btn btn-info mb-1" style="border-radius: 30px;font-size: 9px;">Konfirmasi Pembayaran</a>';
+                        <a href="javascript:void(0)" data-id_pembayaran="' . $value->id_pembayaran . '" class="btn btn-danger mb-1 bayar" style="border-radius: 30px; font-size: 9px;">Lakukan Pembayaran</a>
+                        <a href="javascript:void(0)" data-id_pembayaran="' . $value->id_pembayaran . '" class="btn btn-info mb-1 konfirm" style="border-radius: 30px;font-size: 9px;">Konfirmasi Pembayaran</a>';
                     }
                     $cicil .= '</div>
                 </div>
@@ -190,6 +196,67 @@ class MemberController extends Controller
         ];
 
         return response()->json($data);
+    }
+
+    public function Bayar(Request $request)
+    {
+        $cek = M_pembayaran::findOrFail($request->id);
+
+        $data = [
+            'nilai' => number_format($cek->nilai, 0,",","."),
+            'keterangan' => $cek->keterangan,
+            'id_pembayaran' => $cek->id_pembayaran,
+        ];
+
+        return response()->json($data);
+    }
+
+    public function konfirBayar(Request $request)
+    {
+        $data = M_pembayaran::findOrFail($request->id_pembayaran);
+
+        if ($request->file('gambar')) {
+            $image = $request->file('gambar');
+            $destinationPathThum = public_path('/img/bayar/thumbnail');
+            $img = Image::make($image->path());
+            $imageName =  'byr-' . Carbon::now()->format("Y-m-d") . '-' . $request->id_pembayaran . '.jpg';
+
+            $img->resize(300, 400, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($destinationPathThum . '/' . $imageName);
+
+            $destinationPath = public_path('/img/bayar/');
+            $image->move($destinationPath, $imageName);
+            $destinationPathori = "img/bayar/thumbnail/";
+        } else {
+            $imageName = 'default.jpg';
+            $destinationPathori = "img/";
+        }
+
+        $data->tgl_bayar = $request->tgl_bayar;
+        $data->status = 1;
+        $data->bukti   = $imageName;
+
+        try {
+            $data->save();
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'pesan'  => 'Konfirmasi Pembayaran Berhasil Terkirim!',
+                'kategori' => $request->kategori,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'pesan'  => 'Maaf, Konfirmasi Pembayaran Gagal Terkirim!',
+                'kategori' => $request->kategori,
+                'err'    => $e->getMessage()
+            ]);
+        }
     }
 
     private function Bulan($bulan){

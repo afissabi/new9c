@@ -129,9 +129,9 @@ class LoginController extends Controller
     public function loginMember(Request $request)
     {
         try {
-            if(!$request['g-recaptcha-response']){
-                return $this->successJson("Oops, captchanya diisi dulu dong", 'Captcha Salah', 199);
-            }
+            // if(!$request['g-recaptcha-response']){
+            //     return $this->successJson("Oops, captchanya diisi dulu dong", 'Captcha Salah', 199);
+            // }
             
             $this->checkRegisteredMember($request->username);
             
@@ -168,7 +168,7 @@ class LoginController extends Controller
 
     private function checkRegisteredMember($username){
         $data = User::join('model_has_roles as mhr','mhr.model_id','users.id')->select('name')->where(['username' => $username,'is_aktif' => null])->where('role_id', 4)->first();
-
+        
         if(!$data){
             throw new Exception('Username / Email belum terdaftar', 999);
         }
