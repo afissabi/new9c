@@ -45,12 +45,19 @@
         position: relative;
         z-index: 3;
     }
+
     .btn-reg{
         z-index: 1000;
         /* margin-top: 250px; */
         bottom: 100px;
         position: fixed;
         right: -6px;
+    }
+    
+    @media (max-width: 991.98px){
+        .navbar-brand-img img{
+            content: url({{ asset('front/img/logo_white.png') }});
+        }
     }
     </style>
 </head>
@@ -89,7 +96,9 @@
         <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0">
             <a href="{{ url('/') }}" class="navbar-brand p-0">
                 {{-- <h3 class="m-0" style="color: #122d76;"><i class="fa fa-user-tie me-2"></i>CONGKRONG</h3> --}}
-                <img alt="Image" src="{{ asset('front/img/logo_transparant.png') }}" class="logo-navbar" style="">
+                <div class="navbar-brand-img">
+                    <img alt="Image" src="{{ asset('front/img/logo_transparant.png') }}" class="logo-navbar" style="">
+                </div>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 {{-- <span class="fa fa-bars"></span> --}}
@@ -144,9 +153,9 @@
             <div class="row gx-5">
                 <div class="col-lg-4 col-md-6 footer-about">
                     <div class="d-flex flex-column align-items-center justify-content-center text-center h-100 bg-primary p-4">
-                        <a href="index.html" class="navbar-brand">
+                        <a href="{{ url('/') }}" class="navbar-brand">
                             {{-- <h1 class="m-0 text-white"><i class="fa fa-user-tie me-2"></i>9C Orthodontics</h1> --}}
-                            <img alt="Image" src="{{ asset('front/img/logo_transparant.png') }}" style="height: 100px;">
+                            <img alt="Image" src="{{ asset('front/img/logo_transparant.png') }}" class="logo-front" style="height: 100px;">
                         </a>
                         <p class="mt-3 mb-4">Ingin menjadi mitra kami ? Tawarkan bentuk kerja sama yang anda ajukan dengan mengirimkan email kepada kami di bawah ini...</p>
                         <form action="">
@@ -375,6 +384,19 @@
                 }
             });
         }
+        
+    </script>
+    <script>
+        $(function () { 
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 40) { 
+                    $('.navbar-brand-img img').attr('src','../front/img/logo_white.png');
+                }
+                if ($(this).scrollTop() < 40) { 
+                    $('.navbar-brand-img img').attr('src','../front/img/logo_transparant.png');
+                }
+            })
+        });
     </script>
     @yield('custom_js')
 </body>

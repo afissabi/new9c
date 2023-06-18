@@ -191,12 +191,7 @@ h6,
     }
 
     .navbar-dark .navbar-brand {
-        color: #fff;
         margin-left: -35px;
-        background: #fff;
-        padding: 10px !important;
-        border-radius: 45px 50px 10px 38px;
-        box-shadow: inset 0px 0px 8px 1px #0545f5;
     }
 
     .navbar-dark .navbar-toggler {
@@ -406,10 +401,6 @@ h6,
 
     .navbar-dark .navbar-brand {
         color: #fff;
-        background: #fff;
-        padding: 10px !important;
-        border-radius: 45px 50px 10px 38px;
-        box-shadow: inset 0px 0px 8px 1px #0545f5;
     }
 
     .navbar-dark .navbar-nav .nav-link::before {

@@ -194,23 +194,24 @@
 <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container py-5">
         <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-            <h5 class="fw-bold text-primary text-uppercase">Team Members</h5>
-            <h1 class="mb-0">Professional Stuffs Ready to Help Your Business</h1>
+            <h5 class="fw-bold text-primary text-uppercase">Tim Dokter</h5>
+            <h3 class="mb-0">Kami Memiliki Tim Dokter Professional yang Siap Membantu Anda</h3>
         </div>
         <div class="row g-5">
             @foreach ($dokter as $item)
                 <div class="col-lg-3 wow slideInUp" data-wow-delay="0.3s">
                     <img class="img-fluid rounded" src="{{ asset('front/img/logo_bulat.png') }}" style="height: 70px;position: absolute;margin-top: -19px;border-radius: 50% !important;border: 3px dashed #1574c0;" >
-                    <div class="team-item rounded overflow-hidden" style="background-image: url('{{ asset('front/img/bg-team.png') }}');background-size: cover;background-repeat: no-repeat;">
+                    {{-- <div class="team-item rounded overflow-hidden" style="background-image: url('{{ asset('front/img/bg-team.png') }}');background-size: cover;background-repeat: no-repeat;"> --}}
+                        <div class="team-item rounded overflow-hidden" style="background-image: linear-gradient(180deg, #1575c1, #163284);border-radius: 80px 0px 0px 0px !important;background-size: cover;background-repeat: no-repeat;">
                         <div class="team-img position-relative overflow-hidden">
                             <img class="img-fluid w-100" src="{{ asset($item->path . $item->foto) }}" alt="">
                             <div class="team-social">
                                 <a class="btn btn-lg btn-primary btn-lg-square rounded" href="{{ url('tim-dokter/jadwal/' . $item->slug) }}" data-id_klinik="" style="width: -webkit-fill-available;"><i class="fas fa-calendar-alt"></i> Jadwal Praktek</a>
                             </div>
                         </div>
-                        <div class="text-center py-4">
+                        <div class="text-center py-4" style="font-size: 10px;max-height: 115px;min-height: 115px;">
                             {{-- <a href="#"> --}}
-                                <h4 class="text-primary">{{ $item->nama_pegawai }}</h4>
+                                <h4 class="text-primary" style="font-size: 15px;">{{ $item->nama_pegawai }}</h4>
                             {{-- </a> --}}
                             <p class="text-uppercase m-0">{{ $item->spesialis }}</p>
                         </div>
