@@ -57,6 +57,13 @@
     @media (max-width: 991.98px){
         .navbar-brand-img img{
             content: url({{ asset('front/img/logo_white.png') }});
+            display: block;
+            height: 25px;
+            margin-top: -12px;
+        }
+
+        .navbar-brand-img{
+            
         }
     }
     </style>
@@ -258,7 +265,7 @@
                     <i class="fas fa-grin-stars"></i>
                     <h5>Promo</h5>
                 </a>
-                <a href="javascript:void(0)" class="nav_item" class="nav_item" id="pop_up_profile" onclick=showLogin()>
+                <a href="{{ url('member-area') }}" class="nav_item" class="nav_item" id="pop_up_profile">
                     <i class="fas fa-sign-in-alt"></i>
                     <h5>Member</h5>
                 </a>
@@ -390,10 +397,10 @@
         $(function () { 
             $(window).scroll(function () {
                 if ($(this).scrollTop() > 40) { 
-                    $('.navbar-brand-img img').attr('src','../front/img/logo_white.png');
+                    $('.navbar-brand-img img').attr('src','https://9corthodontics.com/front/img/logo_white.png');
                 }
                 if ($(this).scrollTop() < 40) { 
-                    $('.navbar-brand-img img').attr('src','../front/img/logo_transparant.png');
+                    $('.navbar-brand-img img').attr('src','https://9corthodontics.com/front/img/logo_transparant.png');
                 }
             })
         });

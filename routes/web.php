@@ -32,7 +32,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/pencarian-kata-kunci', [FrontController::class, 'CariKunci'])->name('pencarian-kata-kunci');
 
-Route::get('/', [FrontController::class, 'index']);
+Route::get('/awal', [FrontController::class, 'index']);
+Route::get('/', function () {
+    return view('front.maintenance');
+});
 Route::get('/tim-dokter', [FrontController::class, 'timDokter'])->name('tim-dokter');
 Route::get('/tim-dokter/jadwal/{slug}', [FrontController::class, 'jadwalDokter'])->name('jadwal-dokter');
 Route::get('/layanan/klinik/pusat', [FrontController::class, 'showLayanan'])->name('layanan');

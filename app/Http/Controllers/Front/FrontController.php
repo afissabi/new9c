@@ -126,7 +126,7 @@ class FrontController extends Controller
                             <small class="me-3"><i class="far fa-user text-primary me-2"></i>Admin 9C Orthodontics</small>
                             <small><i class="far fa-calendar-alt text-primary me-2"></i>' . \Carbon\Carbon::parse($value->updated_at)->format('d-m-Y') . '</small>
                         </div>
-                        <h6 class="mb-3">' . $value->judul . '</h6>
+                        <h6 class="mb-3"><a class="" href="' . url('read-artikel/blog/' . $value->slug_judul) . '">' . substr($value->judul, 0, 50) . '...</a></h6>
                         <div style="font-size: 10px !important;" class="get-blog">' . substr($value->konten, 0, 150) . '</div>
                         <a class="" href="' . url('read-artikel/blog/' . $value->slug_judul) . '">Read More <i class="bi bi-arrow-right"></i></a>
                     </div>

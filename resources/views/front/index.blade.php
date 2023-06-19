@@ -250,7 +250,7 @@
                             {{-- <small class="text-uppercase">Profession</small> --}}
                         </div>
                     </div>
-                    <div class="pt-4 pb-5 px-5" style="max-height: 125px;min-height: 125px;">
+                    <div class="pt-4 pb-5 px-5" style="max-height: 200px;min-height: 200px;font-size:12px;">
                         <i class="fas fa-quote-left"></i> {!! $item->konten !!}
                     </div>
                 </div>
