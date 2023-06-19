@@ -66,6 +66,7 @@
                     <th><center>Part / Bagian</center></th>
                     <th><center>Judul</center></th>
                     <th><center>Konten</center></th>
+                    <th><center>Link</center></th>
                     <th><center>Gambar / Icon</center></th>
                     <th width="15%"><center>Detail</center></th>
                 </tr>
@@ -116,6 +117,12 @@
                         <label class="col-lg-3 col-form-label text-lg-end required">Konten :</label>
                         <div class="col-lg-8">
                             <textarea name="konten" id="kt_docs_ckeditor_classic"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-10">
+                        <label class="col-lg-3 col-form-label text-lg-end">Link :</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control" name="link" placeholder="Link">
                         </div>
                     </div>
             </div>
@@ -169,6 +176,12 @@
                         <label class="col-lg-3 col-form-label text-lg-end required">Konten :</label>
                         <div class="col-lg-8">
                             <textarea name="konten" id="kt_docs_ckeditor_classic_edit"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-10">
+                        <label class="col-lg-3 col-form-label text-lg-end">Link :</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control" name="link" id="link" placeholder="Link">
                         </div>
                     </div>
             </div>
@@ -275,6 +288,7 @@
                     $('#id_konten_section').val(msg.id_konten_section);
                     $('#kt_docs_ckeditor_classic_edit').val(msg.konten);
                     $('#judul').val(msg.judul);
+                    $('#link').val(msg.link);
                     $('#section').val(msg.id_section).trigger("change");
 
                 }

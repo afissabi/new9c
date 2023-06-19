@@ -12,6 +12,27 @@
     .get-blog h2 {
         font-size: 10px;
     }
+
+    /* Start Gallery CSS */
+    .thumb {
+        margin-bottom: 15px;
+    }
+    .thumb:last-child {
+        margin-bottom: 0;
+    }
+    /* CSS Image Hover Effects: https://www.nxworld.net/tips/css-image-hover-effects.html */
+    .thumb 
+    figure img {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+    }
+    .thumb 
+    figure:hover img {
+    -webkit-filter: grayscale(0);
+    filter: grayscale(0);
+    }
 </style>
 @endsection
 
@@ -85,9 +106,9 @@
                 <!-- Recent Post End -->
 
                 <!-- Image Start -->
-                <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
+                {{-- <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
                     <img src="img/blog-1.jpg" alt="" class="img-fluid rounded">
-                </div>
+                </div> --}}
                 <!-- Image End -->
 
                 <!-- Tags Start -->
@@ -127,9 +148,46 @@
         </div>
     </div>
 </div>
+
+<div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <div class="section-title text-center position-relative pb-3 mb-4 mx-auto" style="max-width: 600px;">
+            <h5 class="fw-bold text-primary text-uppercase">Galeri Misi Sosial</h5>
+        </div>
+        <div class="owl-carousel testimonial-carousel wow fadeInUp gallery" data-wow-delay="0.6s" id="testimoni">
+            @foreach ($galeri as $item)
+                <div class="testimonial-item bg-light my-4" >
+                    <div class="d-flex align-items-center thumb" >
+                        <a href="">
+                            <figure><img class="img-fluid img-thumbnail" src="{{ asset($item->path . $item->gambar) }}" alt="Random Image"></figure>
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('custom_js')
+<script>
+    $(document).ready(function() {
+        $(".gallery").magnificPopup({
+            delegate: "a",
+            type: "image",
+            tLoading: "Loading image #%curr%...",
+            mainClass: "mfp-img-mobile",
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+            },
+            image: {
+                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+            }
+        });
+    });
+</script>
 <script>
     $(window).on('load', function() {
         blog();

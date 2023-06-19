@@ -26,6 +26,9 @@ class ArtikelController extends Controller
         $active_blog = '';
         $active_sosial = '';
         $active_acara = '';
+        $active_press = '';
+        $active_event = '';
+        $active_galeri = '';
 
         if($kategori == 'blog'){
             $active_blog = 'active';
@@ -33,6 +36,12 @@ class ArtikelController extends Controller
             $active_sosial = 'active';
         }else if($kategori == 'acara'){
             $active_acara = 'active';
+        }else if($kategori == 'press'){
+            $active_press = 'active';
+        }else if($kategori == 'event'){
+            $active_event = 'active';
+        }else if($kategori == 'galeri'){
+            $active_galeri = 'active';
         }
 
         $data = [
@@ -41,6 +50,9 @@ class ArtikelController extends Controller
             'active_blog' => $active_blog,
             'active_sosial' => $active_sosial,
             'active_acara' => $active_acara,
+            'active_press' => $active_press,
+            'active_event' => $active_event,
+            'active_galeri' => $active_galeri,
         ];
 
         return view('website.artikel', $data);
@@ -51,6 +63,9 @@ class ArtikelController extends Controller
         $active_blog = '';
         $active_sosial = '';
         $active_acara = '';
+        $active_press = '';
+        $active_event = '';
+        $active_galeri = '';
 
         if($kategori == 'blog'){
             $active_blog = 'active';
@@ -58,13 +73,23 @@ class ArtikelController extends Controller
             $active_sosial = 'active';
         }else if($kategori == 'acara'){
             $active_acara = 'active';
+        }else if($kategori == 'press'){
+            $active_press = 'active';
+        }else if($kategori == 'event'){
+            $active_event = 'active';
+        }else if($kategori == 'galeri'){
+            $active_galeri = 'active';
         }
+        
 
         $data = [
             'kategori' => $kategori,
             'active_blog' => $active_blog,
             'active_sosial' => $active_sosial,
             'active_acara' => $active_acara,
+            'active_press' => $active_press,
+            'active_event' => $active_event,
+            'active_galeri' => $active_galeri,
         ];
 
         return view('website.artikelcreate',$data);
@@ -93,6 +118,7 @@ class ArtikelController extends Controller
 
             $data_tables[$key][] = '<center>' . $value->judul . '</center>';
             $data_tables[$key][] = '<center>' . substr($value->konten, 0, 100) . '...</center>';
+            $data_tables[$key][] = '<center>' . $value->link . '</center>';
             $data_tables[$key][] = '<center><img src="' . asset($value->path . $value->gambar) . '" style="width: 100px;"></center>';
 
             $aksi = '';
@@ -152,6 +178,8 @@ class ArtikelController extends Controller
         $data->gambar   = $imageName;
         $data->path     = $destinationPathori;
         $data->kategori = $request->kategori;
+        $data->kategori_galeri = $request->kategori_galeri;
+        $data->link   = $request->link;
         $data->is_jadwal = $request->is_jadwal;
         $data->jadwal = $request->jadwal;
         $data->is_tayang = $tayang;
@@ -192,6 +220,9 @@ class ArtikelController extends Controller
         $active_blog = '';
         $active_sosial = '';
         $active_acara = '';
+        $active_press = '';
+        $active_event = '';
+        $active_galeri = '';
 
         if($artikel->kategori == 'blog'){
             $active_blog = 'active';
@@ -199,6 +230,12 @@ class ArtikelController extends Controller
             $active_sosial = 'active';
         }else if($artikel->kategori == 'acara'){
             $active_acara = 'active';
+        }else if($artikel->kategori == 'press'){
+            $active_press = 'active';
+        }else if($artikel->kategori == 'event'){
+            $active_event = 'active';
+        }else if($artikel->kategori == 'galeri'){
+            $active_galeri = 'active';
         }
 
         $data = [
@@ -207,10 +244,12 @@ class ArtikelController extends Controller
             'active_blog' => $active_blog,
             'active_sosial' => $active_sosial,
             'active_acara' => $active_acara,
+            'active_press' => $active_press,
+            'active_event' => $active_event,
+            'active_galeri' => $active_galeri,
         ];
 
         return view('website.artikeledit', $data);
-        
     }
 
     public function ubah(Request $request)
@@ -252,8 +291,10 @@ class ArtikelController extends Controller
         $data->slug_judul = Str::slug($request->judul);
         $data->konten   = $request->konten;
         $data->gambar   = $imageName;
+        $data->link   = $request->link;
         $data->path     = $destinationPathori;
         $data->kategori = $request->kategori;
+        $data->kategori_galeri = $request->kategori_galeri;
         $data->is_jadwal = $request->is_jadwal;
         $data->jadwal = $request->jadwal;
         $data->is_tayang = $tayang;

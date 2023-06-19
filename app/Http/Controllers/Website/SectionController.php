@@ -178,6 +178,7 @@ class SectionController extends Controller
             $data_tables[$key][] = '<center>' . $value->sect->part . '</center>';
             $data_tables[$key][] = '<center>' . $value->judul . '</center>';
             $data_tables[$key][] = '<center>' . $value->konten . '</center>';
+            $data_tables[$key][] = '<center>' . $value->link . '</center>';
             
             $data_tables[$key][] = '<center><img src="' . asset($value->path . $value->gambar) . '" style="width: 100px;"></center>';
 
@@ -229,6 +230,7 @@ class SectionController extends Controller
         $data->id_section = $request->section;
         $data->judul   = $request->judul;
         $data->konten   = $request->konten;
+        $data->link   = $request->link;
         $data->gambar   = $imageName;
         $data->path     = $destinationPathori;
 
@@ -279,6 +281,7 @@ class SectionController extends Controller
         $data->id_section = $request->section;
         $data->judul   = $request->judul;
         $data->konten   = $request->konten;
+        $data->link   = $request->link;
         $data->gambar   = $imageName;
         $data->path     = $destinationPathori;
 

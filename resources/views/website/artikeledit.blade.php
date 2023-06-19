@@ -77,7 +77,10 @@
                     <a class="nav-link text-active-primary me-6 {{ $active_blog }}" href="{{ url('website/artikel/blog') }}">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-active-primary me-6" href="{{ url('website/artikel/bank-gambar') }}">Bank Gambar</a>
+                    <a class="nav-link text-active-primary me-6 {{ $active_press }}" href="{{ url('website/artikel/press') }}">Press Release</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary me-6 {{ $active_event }}" href="{{ url('website/artikel/event') }}">Event</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-active-primary me-6 {{ $active_sosial }}" href="{{ url('website/artikel/misi-sosial') }}">Misi Sosial</a>
@@ -86,7 +89,7 @@
                     <a class="nav-link text-active-primary me-6 {{ $active_acara }}" href="{{ url('website/artikel/acara') }}">Acara</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-active-primary me-6" href="{{ url('website/artikel/galeri') }}">Galeri</a>
+                    <a class="nav-link text-active-primary me-6 {{ $active_galeri }}" href="{{ url('website/artikel/galeri') }}">Galeri</a>
                 </li>
             </ul>
         </div>
@@ -113,6 +116,20 @@
                     <input type="text" class="form-control" name="judul" placeholder="Judul" value="{{ $artikel->judul }}">
                 </div>
             </div>
+            @if($kategori == 'galeri')
+            <div class="fv-row row mb-15">
+                <div class="col-md-3">
+                    <label class="fs-6 fw-bold mt-2">Peruntukan</label>
+                    <div class="text-muted fs-7">Pilih Galeri Akan Tampil Dimana...</div>
+                </div>
+                <div class="col-md-9">
+                    <select name="kategori_galeri" id="kategori_galeri" data-control="select2" class="form-select mb-2">
+                        <option value="MISOL">MISI SOSIAL</option>
+                        <option value="EVENT">EVENT</option>
+                    </select>
+                </div>
+            </div>
+            @endif
             <div class="fv-row row mb-15">
                 <div class="col-md-3">
                     <label class="fs-6 fw-bold">Gambar</label>
@@ -134,6 +151,15 @@
                 </div>
                 <div class="col-md-9">
                     <textarea name="konten" id="kt_docs_ckeditor_classic">{{ $artikel->konten }}</textarea>
+                </div>
+            </div>
+            <div class="fv-row row mb-15">
+                <div class="col-md-3">
+                    <label class="fs-6 fw-bold mt-2">Link</label>
+                    <div class="text-muted fs-7">Tuliskan link disini</div>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" name="link" id="link" value="{{ $artikel->link }}" data-placeholder="Input link...">
                 </div>
             </div>
             <div class="fv-row row mb-15">

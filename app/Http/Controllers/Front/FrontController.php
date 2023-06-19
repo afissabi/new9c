@@ -121,13 +121,13 @@ class FrontController extends Controller
                         <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" alt="" style="max-height: 205px;width: -webkit-fill-available;">
                         <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Blog</a>
                     </div>
-                    <div class="p-4" style="max-height: 225px;min-height: 225px;">
+                    <div class="p-4" style="max-height: 245px;min-height: 245px;">
                         <div class="d-flex mb-3">
                             <small class="me-3"><i class="far fa-user text-primary me-2"></i>Admin 9C Orthodontics</small>
                             <small><i class="far fa-calendar-alt text-primary me-2"></i>' . \Carbon\Carbon::parse($value->updated_at)->format('d-m-Y') . '</small>
                         </div>
                         <h6 class="mb-3"><a class="" href="' . url('read-artikel/blog/' . $value->slug_judul) . '">' . substr($value->judul, 0, 50) . '...</a></h6>
-                        <div style="font-size: 10px !important;" class="get-blog">' . substr($value->konten, 0, 150) . '</div>
+                        <div style="font-size: 10px !important;" class="get-blog">' . substr($value->konten, 0, 250) . '...</div>
                         <a class="" href="' . url('read-artikel/blog/' . $value->slug_judul) . '">Read More <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
@@ -252,7 +252,7 @@ class FrontController extends Controller
                         <small class="me-3"><i class="far fa-user text-primary me-2"></i>Admin 9C Orthodontics</small>
                         <small><i class="far fa-calendar-alt text-primary me-2"></i>' . \Carbon\Carbon::parse($value->updated_at)->format('d-m-Y') . '</small>
                         </div>
-                        <h6 class="mb-3">' . $value->judul . '</h6>
+                        <h6 class="mb-3"><a class="" href="' . url('read-artikel/blog/' . $value->slug_judul) . '">' . substr($value->judul, 0, 50) . '...</a></h6>
                         <div class="get-blog" style="font-size: 10px !important;">
                             <p>' . substr($value->konten, 0, 150) . '</p>
                         </div>
@@ -275,11 +275,35 @@ class FrontController extends Controller
             <div class="d-flex rounded overflow-hidden mb-3">
                 <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" style="width: 100px; height: 100px; object-fit: cover;z-index: 1;" alt="">
                 <div class="row" style="background: #0545f529;min-width: -webkit-fill-available;">
-                    <div class="col-md-12 mt-3">
-                        <a href="' . url('read-artikel/blog/' . $value->slug_judul) . '" class="h6 fw-semi-bold align-items-center px-3 mb-0" style="width: 230px;">' . $value->judul . '</a>
+                    <div class="mt-3">
+                        <a href="' . url('read-artikel/blog/' . $value->slug_judul) . '" class="h6 fw-semi-bold mb-0" style="margin-left: 16px;display: block;font-size: 10px;width: 220px;">' . substr($value->judul, 0, 150) . '...</a>
                         <div class="ml-3" style="margin-left: 16px;font-size: 12px;">
                             <small class="me-3"><i class="far fa-user text-primary me-2"></i>Admin 9C Orthodontics</small><br>
                             <small><i class="far fa-calendar-alt text-primary me-2"></i>' . \Carbon\Carbon::parse($value->updated_at)->format('d-m-Y') . '</small>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>';
+        }
+
+        echo $blog;
+    }
+
+    public function pressRelease(Request $request)
+    {
+        $blog  = '';
+        $artikel = M_artikel::where('kategori','press')->orderBy('updated_at','DESC')->limit($request->need)->get();
+
+        foreach ($artikel as $value) {
+            $blog .= '
+            <div class="d-flex rounded overflow-hidden mb-3">
+                <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" style="width: 100px; height: 100px; object-fit: cover;z-index: 1;" alt="">
+                <div class="row" style="background: #0545f529;min-width: -webkit-fill-available;">
+                    <div class="mt-3">
+                        <a href="' . $value->link . '" class="h6 fw-semi-bold mb-0" style="margin-left: 16px;display: block;font-size: 20px;width: 220px;">' . substr($value->judul, 0, 150) . '...</a>
+                        <div class="ml-3" style="margin-left: 16px;display: block;font-size: 12px;width: 220px;">
+                            <small class="me-3"><i class="fas fa-link text-primary me-2"></i>' . substr($value->link, 0, 50) . '...</small><br>
                         </div>
                     </div>
                 </div>
@@ -346,6 +370,62 @@ class FrontController extends Controller
         echo $blog;
     }
 
+    public function allEvent(Request $request)
+    {
+        $blog  = '';
+        $artikel = M_artikel::where('kategori','event')->orderBy('updated_at','DESC')->limit($request->need)->get();
+
+        foreach ($artikel as $value) {
+            $blog .= '
+            <div class="col-md-6 wow slideInUp v_cari" data-wow-delay="0.1s" data-filter-name="' . strtolower($value->judul) . '">
+                <div class="blog-item bg-light rounded overflow-hidden">
+                    <div class="blog-img position-relative overflow-hidden">
+                        <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" alt="" style="max-height: 205px;width: -webkit-fill-available;">
+                        <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Misi Sosial</a>
+                    </div>
+                    <div class="p-4" style="max-height: 225px;min-height: 225px;">
+                        <div class="d-flex mb-3">
+                        <small class="me-3"><i class="far fa-user text-primary me-2"></i>Admin 9C Orthodontics</small>
+                        <small><i class="far fa-calendar-alt text-primary me-2"></i>' . \Carbon\Carbon::parse($value->updated_at)->format('d-m-Y') . '</small>
+                        </div>
+                        <h6 class="mb-3">' . $value->judul . '</h6>
+                        <div class="get-blog" style="font-size: 10px !important;">
+                            <p>' . substr($value->konten, 0, 150) . '</p>
+                        </div>
+                        <a class="text-uppercase" href="' . url('read-artikel/misi-sosial/' . $value->slug_judul) . '">Read More <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>';
+        }
+
+        echo $blog;
+    }
+
+    public function recentEvent(Request $request)
+    {
+        $blog  = '';
+        $artikel = M_artikel::where('kategori','event')->orderBy('updated_at','DESC')->limit($request->need)->get();
+
+        foreach ($artikel as $value) {
+            $blog .= '
+            <div class="d-flex rounded overflow-hidden mb-3">
+                <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" style="width: 100px; height: 100px; object-fit: cover;z-index: 1;" alt="">
+                <div class="row" style="background: #0545f529;min-width: -webkit-fill-available;">
+                    <div class="col-md-12 mt-3">
+                        <a href="' . url('read-artikel/misi-sosial/' . $value->slug_judul) . '" class="h6 fw-semi-bold align-items-center px-3 mb-0" style="width: 230px;">' . $value->judul . '</a>
+                        <div class="ml-3" style="margin-left: 16px;font-size: 12px;">
+                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Admin 9C Orthodontics</small><br>
+                            <small><i class="far fa-calendar-alt text-primary me-2"></i>' . \Carbon\Carbon::parse($value->updated_at)->format('d-m-Y') . '</small>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>';
+        }
+
+        echo $blog;
+    }
+
     // public function getVendor(Request $request)
     // {
     //     $vendor = Konten_section::where('id_section',7)->get();
@@ -363,14 +443,29 @@ class FrontController extends Controller
     public function misiSosial()
     {
         // $plain = Konten_section::where('id_section',10)->first();
+        $galeri = M_artikel::where('kategori','galeri')->where('kategori_galeri','MISOL')->orderBy('updated_at','Desc')->get();
 
         $data = [
             'menu_active'   => 'Artikel',
             'parent_active' => '',
-            // 'plain' => $plain,
+            'galeri' => $galeri,
         ];
 
         return view('front.misol', $data);
+    }
+
+    public function Event()
+    {
+        // $plain = Konten_section::where('id_section',10)->first();
+        $galeri = M_artikel::where('kategori','galeri')->where('kategori_galeri','EVENT')->orderBy('updated_at','Desc')->get();
+
+        $data = [
+            'menu_active'   => 'Artikel',
+            'parent_active' => '',
+            'galeri' => $galeri,
+        ];
+
+        return view('front.event', $data);
     }
 
 
@@ -965,6 +1060,21 @@ class FrontController extends Controller
         ];
 
         return view('front.cabang', $data);
+    }
+
+    public function cabangDetail($id)
+    {
+        $klinik = M_klinik::where('id_klinik',decrypt($id))->first();
+        $jam = M_operasional::where('id_klinik',decrypt($id))->get();
+
+        $data = [
+            'menu_active'   => 'cabang',
+            'parent_active' => '',
+            'klinik' => $klinik,
+            'jam' => $jam,
+        ];
+
+        return view('front.cabangdetail', $data);
     }
 
     public function timDokter()

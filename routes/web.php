@@ -55,11 +55,13 @@ Route::post('simpan-register/layanan', [FrontController::class, 'layananDaftar']
 Route::post('simpan-pesan', [FrontController::class, 'sendPesan'])->name('kirim-pesan');
 
 Route::get('/misi-sosial', [FrontController::class, 'misiSosial'])->name('misi-sosial');
+Route::get('/event', [FrontController::class, 'Event'])->name('event');
 
 Route::get('/artikel', [FrontController::class, 'artikel'])->name('pilih-artikel');
 Route::get('/read-artikel/{tipe}/{slug}', [FrontController::class, 'artikelRead'])->name('baca-artikel');
 Route::get('/klinik-kami', [FrontController::class, 'kami'])->name('pilih-kami');
 Route::get('/cabang', [FrontController::class, 'cabang'])->name('pilih-cabang');
+Route::get('/cabang/{id}', [FrontController::class, 'cabangDetail'])->name('detail-cabang');
 Route::get('/hubungi-kami', [FrontController::class, 'hubkami'])->name('pilih-kami');
 Route::get('/email-register', [FrontController::class, 'sendRegister'])->name('kirim-registrasi');
 // AJAX FRONT
@@ -88,9 +90,12 @@ Route::get('/get-metode-bayar-layanan', [FrontController::class, 'getMetodeBayar
 
 Route::get('/all-blog', [FrontController::class, 'allBlog'])->name('get-blog');
 Route::get('/recent-blog', [FrontController::class, 'recentBlog'])->name('get-blog');
+Route::get('/press-release', [FrontController::class, 'pressRelease'])->name('press-release');
 
 Route::get('/all-misol', [FrontController::class, 'allMisol'])->name('get-misol');
 Route::get('/recent-misol', [FrontController::class, 'recentMisol'])->name('get-misol');
+Route::get('/all-event', [FrontController::class, 'allEvent'])->name('get-event');
+Route::get('/recent-event', [FrontController::class, 'recentEvent'])->name('get-event');
 
 // Route::get('/get-vendor', [FrontController::class, 'getVendor'])->name('get-vendor');
 

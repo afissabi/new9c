@@ -32,7 +32,7 @@
                         </div>
                         <h4 class="mb-3" style="color:#fff">{{ $item->nama }}</h4>
                         <p class="m-0">{{ $item->alamat }}<br>{{ $item->kota }}</p>
-                        <a class="btn btn-lg btn-primary rounded tanggal" href="javascript:void(0)" data-id_klinik="" data-id_promo="" style="width: -webkit-fill-available !important;border-radius: 40px 0px 0px 40px !important;">
+                        <a class="btn btn-lg btn-primary rounded" href="{{ url('cabang/' . encrypt($item->id_klinik)) }}" data-id_klinik="" data-id_promo="" style="width: -webkit-fill-available !important;border-radius: 40px 0px 0px 40px !important;">
                             <i class="bi bi-arrow-right"></i> Lihat
                         </a>
                     </div>

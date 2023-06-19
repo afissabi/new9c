@@ -82,7 +82,7 @@
             <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
                 <div class="d-inline-flex align-items-center" style="height: 45px;">
                     <i class="fa fa-map-marker-alt me-2" style="color: #fff;"></i><small class="me-3 text-light" style="font-size: 10px;">Ruko Pakuwon Town Square Blok AA-2/25<br> Surabaya, Jawa Timur Indonesia</small>
-                    <i class="fa fa-phone-alt me-2" style="color: #fff;"></i><small class="me-3 text-light" style="font-size: 10px;">031-59177353 <br> +6281 8031 12017</small>
+                    <i class="fa fa-phone-alt me-2" style="color: #fff;"></i><small class="me-3 text-light" style="font-size: 10px;">031-591 77353 <br> +62 818 0311 2017</small>
                     <i class="fa fa-envelope-open me-2" style="color: #fff;"></i><small class="text-light" style="font-size: 10px;">info.orthodontics.9c@gmail.com</small>
                 </div>
             </div>

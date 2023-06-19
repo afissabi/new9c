@@ -54,10 +54,21 @@
                 <!-- Recent Post End -->
 
                 <!-- Image Start -->
-                <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
+                {{-- <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
                     <img src="img/blog-1.jpg" alt="" class="img-fluid rounded">
-                </div>
+                </div> --}}
                 <!-- Image End -->
+
+                <!-- Tags Start -->
+                <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
+                    <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                        <h3 class="mb-0">Press Release</h3>
+                    </div>
+                    <div class="row" id="press">
+                        
+                    </div>
+                </div>
+                <!-- Tags End -->
 
                 <!-- Plain Text Start -->
                 <div class="wow slideInUp" data-wow-delay="0.1s">
@@ -80,6 +91,7 @@
 <script>
     $(window).on('load', function() {
         recent();
+        press();
     });
 
     function recent() {
@@ -95,6 +107,23 @@
 
             success: function(response){
                 $('#recent').html(response);
+            }
+        });
+    }
+
+    function press() {
+        var need = 8;
+
+        $.ajax({
+            url: "{{ url('/press-release') }}",
+            type: "get",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: {
+                need : need,
+            },
+
+            success: function(response){
+                $('#press').html(response);
             }
         });
     }

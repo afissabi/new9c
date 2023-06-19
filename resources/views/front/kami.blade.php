@@ -42,7 +42,7 @@
                     </div>
                     <div class="ps-4">
                         <h5 class="mb-2">Call to ask any question</h5>
-                        <h4 class="text-primary mb-0">031 591 77353</h4>
+                        <h4 class="text-primary mb-0">+62 818 0311 2017</h4>
                     </div>
                 </div>
                 {{-- <a href="quote.html" class="btn btn-primary py-3 px-5 mt-3 wow zoomIn" data-wow-delay="0.9s">Request A Quote</a> --}}

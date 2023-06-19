@@ -80,7 +80,10 @@
                     <a class="nav-link text-active-primary me-6 {{ $active_blog }}" href="{{ url('website/artikel/blog') }}">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-active-primary me-6" href="{{ url('website/artikel/bank-gambar') }}">Bank Gambar</a>
+                    <a class="nav-link text-active-primary me-6 {{ $active_press }}" href="{{ url('website/artikel/press') }}">Press Release</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary me-6 {{ $active_event }}" href="{{ url('website/artikel/event') }}">Event</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-active-primary me-6 {{ $active_sosial }}" href="{{ url('website/artikel/misi-sosial') }}">Misi Sosial</a>
@@ -89,7 +92,7 @@
                     <a class="nav-link text-active-primary me-6 {{ $active_acara }}" href="{{ url('website/artikel/acara') }}">Acara</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-active-primary me-6" href="{{ url('website/artikel/galeri') }}">Galeri</a>
+                    <a class="nav-link text-active-primary me-6 {{ $active_galeri }}" href="{{ url('website/artikel/galeri') }}">Galeri</a>
                 </li>
             </ul>
         </div>
@@ -115,6 +118,7 @@
                     <th><center>Status</center></th>
                     <th><center>Judul</center></th>
                     <th><center>Konten</center></th>
+                    <th><center>Link</center></th>
                     <th><center>Gambar</center></th>
                     <th width="15%"><center>Detail</center></th>
                 </tr>

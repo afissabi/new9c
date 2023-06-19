@@ -80,6 +80,7 @@
     <div class="container py-5 pt-lg-0">
         <div class="row gx-0">
             <div class="col-lg-4 wow zoomIn" data-wow-delay="0.1s">
+                <a href="{{ url('/cabang') }}">
                 <div class="shadow d-flex align-items-center justify-content-center p-4" style="height: 150px;background:#0545f5">
                     {{-- <div class="bg-white d-flex align-items-center justify-content-center rounded mb-2" style="width: 60px; height: 60px;">
                         <i class="fas fa-clinic-medical" style="color:#0545f5"></i>    
@@ -90,8 +91,10 @@
                         <h1 class="text-white mb-0" data-toggle="counter-up" id="countKlinik">0</h1>
                     </div>
                 </div>
+                </a>
             </div>
             <div class="col-lg-4 wow zoomIn" data-wow-delay="0.3s">
+                <a href="{{ url('/tim-dokter') }}">
                 <div class="bg-light shadow d-flex align-items-center justify-content-center p-4" style="height: 150px;">
                     {{-- <div class="bg-primary d-flex align-items-center justify-content-center rounded mb-2" style="width: 60px; height: 60px;">
                         <i class="fas fa-user-md" style="color: #0545f5;"></i>
@@ -102,8 +105,10 @@
                         <h1 class="mb-0" data-toggle="counter-up" id="countDokter">0</h1>
                     </div>
                 </div>
+                </a>
             </div>
             <div class="col-lg-4 wow zoomIn" data-wow-delay="0.6s">
+                <a href="{{ url('/layanan') }}">
                 <div class="shadow d-flex align-items-center justify-content-center p-4" style="height: 150px;background:#0545f5">
                     {{-- <div class="bg-white d-flex align-items-center justify-content-center rounded mb-2" style="width: 60px; height: 60px;">
                         <i class="fa fa-award text-primary"></i>
@@ -114,6 +119,7 @@
                         <h1 class="text-white mb-0" data-toggle="counter-up" id="countLayanan">0</h1>
                     </div>
                 </div>
+                </a>
             </div>
         </div>
     </div>
@@ -237,14 +243,14 @@
 <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container py-5">
         <div class="section-title text-center position-relative pb-3 mb-4 mx-auto" style="max-width: 600px;">
-            <h5 class="fw-bold text-primary text-uppercase">Testimonial</h5>
-            <h1 class="mb-0">Apa yang dirasakan oleh pasien kami ?</h1>
+            <h5 class="fw-bold text-primary text-uppercase">Sharing Experience</h5>
+            <h4 class="mb-0">Apa yang dirasakan oleh pasien kami ?</h4>
         </div>
         <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.6s" id="testimoni">
             @foreach ($testi as $item)
                 <div class="testimonial-item bg-light my-4" style="border-radius: 85px 0px 85px 0px;border: 2px solid #0545f5;margin-right: 10px;margin-left: 10px;">
                     <div class="d-flex align-items-center border-bottom pt-5 pb-4 px-5" >
-                        <img class="img-fluid" src="{{ asset($item->path . $item->gambar) }}" style="width: 120px;height: 120px;border-radius: 50%;margin-top: -70px;margin-left: -30px;border: 2px solid #0545f5;">
+                        <img class="img-fluid" src="{{ asset($item->path . $item->gambar) }}" style="width: 120px;height: 120px;margin-top: -70px;margin-left: -30px;">
                         <div class="ps-4">
                             <h4 class="text-primary mb-1">{{ $item->judul }}</h4>
                             {{-- <small class="text-uppercase">Profession</small> --}}
