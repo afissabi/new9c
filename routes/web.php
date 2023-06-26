@@ -292,6 +292,9 @@ Route::group(['middleware' => 'admin'], function () {
         Route::post('/jadwal/ubah', [KlinikController::class, 'JadwalUbah'])->name('jadwal-ubah');
         Route::post('/jadwal/hapus', [KlinikController::class, 'JadwalHapus'])->name('jadwal-hapus');
 
+        Route::post('/galeri', [KlinikController::class, 'galeri'])->name('galeri');
+        Route::post('/simpan-galeri', [KlinikController::class, 'SimpanGaleri'])->name('simpan-galeri');
+        Route::post('/destroy-galeri', [KlinikController::class, 'destroyGaleri'])->name('klinik-destroy-galeri');
 
 
         Route::post('/layanan', [KlinikController::class, 'layanan'])->name('layanan');

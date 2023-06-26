@@ -18,7 +18,7 @@
             <h4 class="text-gray-900 fw-bolder">Data Klinik</h4>
             <div class="fs-6 text-gray-700 pe-7">Berikut adalah daftar klinik dari 9CORTHODONTICS</div>
         </div>
-        <a href="#" class="btn btn-primary px-6 align-self-center text-nowrap">Withdraw Money</a>
+        {{-- <a href="#" class="btn btn-primary px-6 align-self-center text-nowrap">Withdraw Money</a> --}}
     </div>
 </div>
 
@@ -74,6 +74,9 @@
                                         <div class="separator mb-3 opacity-75"></div>
                                         <div class="menu-item px-3">
                                             <a href="javascript:void(0)" class="jam menu-link px-3" data-id_klinik="{{$value->id_klinik}}">Jam Operasional</a>
+                                        </div>
+                                        <div class="menu-item px-3">
+                                            <a href="javascript:void(0)" class="galeri menu-link px-3" data-id_klinik="{{$value->id_klinik}}">Galeri Klinik</a>
                                         </div>
                                         <div class="menu-item px-3">
                                             <a href="javascript:void(0)" class="dokter menu-link px-3" data-id_klinik="{{$value->id_klinik}}">Dokter</a>
@@ -449,6 +452,66 @@
         </div>
     </div>
 </div>
+
+{{-- MODAL GALERI --}}
+<div class="modal fade" tabindex="-1" id="kt_modal_galeri" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-750px">
+        <div class="modal-content" style="width: 125%;">
+            <div class="modal-header" style="background: #f1faff;">
+                <h5 class="modal-title">Galeri Klinik</h5>
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-2x"></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="form" id="formgaleri" method="post">
+                    <input type="hidden" class="form-control" name="klinik" id="klinik_galeri">
+                    <div class="fv-row row mb-15">
+                        <div class="col-md-5">
+                            <label class="fs-6 fw-bold">Gambar :</label>
+                            <label class="picture" for="picture__input" tabIndex="0">
+                                <span class="picture__image"></span>
+                            </label>
+                            <input type="file" name="gambar" id="picture__input" accept="image/png, image/gif, image/jpeg" style="border: 1px dashed;padding: 6px;margin-top: 8px;">
+                        </div>
+                        <div class="col-md-5">
+                            <label class="fs-6 fw-bold mt-2">Keterangan :</label>
+                            <input type="text" class="form-control" name="keterangan" data-placeholder="">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary" id="kt_file_manager_settings_submit" style="margin-top:29px">
+                                <span class="indicator-label">Simpan</span>
+                                <span class="indicator-progress">Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <div class="row mb-10" id="daftar-galeri">
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal"><i class="fas fa-times-circle"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="loading" style="">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 85%;background-color: rgba(0,0,0,.0001) !important;box-shadow: none;">
+            <div class="modal-body">
+                <center>
+                    <i class="fa fa-spinner fa-spin" style="font-size: 85px;color: cadetblue;"></i>
+                    <br><br>
+                    <h3 style="color: #ffffff;background: cadetblue;">Proses menyimpan data...</h3>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('custom_js')
@@ -647,6 +710,30 @@ $('#listing').on('click', '.layanan', function (e) {
         }
     });
 });
+
+$('#listing').on('click', '.galeri', function (e) {
+    var klinik = $(this).data('id_klinik');
+
+    $.ajax({
+        url: "{{ url('klinik/galeri') }}",
+        type: "post",
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        data: {
+            klinik: klinik,
+        },
+        success: function(msg){
+            // Add response in Modal body
+            if(msg){
+                $('#klinik_galeri').val(msg.id_klinik);
+                $('#daftar-galeri').html(msg.html);
+            }
+            // Display Modal
+            $('#kt_modal_galeri').modal('show');
+        }
+    });
+});
+
+
 
 function pilihKota() {
     $.ajax({
@@ -995,6 +1082,123 @@ function klinikAktif(id_data) {
             }
         });
     }
+}
+
+// POST TAMBAH GALERI KLINIK
+$(function () {
+    $("#formgaleri").submit(function(e) {
+        e.preventDefault();
+        let formData = new FormData(this);
+
+        swal.fire({
+            title: "Apa Anda Yakin?",
+            text: "Menambah Gambar Untuk Klinik ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, Tambah!",
+            closeOnConfirm: false,
+            allowOutsideClick: false,
+        }).then(function(result) {
+            $('#loading').modal({backdrop:'static', keyboard:false});
+            $('#loading').modal('show');
+            if (result.value) {
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    type:'POST',
+                    url: "{{ url('klinik/simpan-galeri') }}",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                })
+                .done(function(hasil) {
+                    var tittle = "";
+                    var icon = "";
+                    $('#loading').modal('hide');
+                    if (hasil.status == true) {
+                        title = "Berhasil!";
+                        icon = "success";
+
+                        swal.fire({
+                            title: title,
+                            text: hasil.pesan,
+                            icon: icon,
+                            button: "OK!",
+                            allowOutsideClick: false,
+                        }).then(function() {
+                            $('#loading').modal('hide');
+                            $('#kt_modal_galeri').modal('hide');
+                        });
+                    } else {
+                        title = "Gagal!";
+                        icon = "error";
+
+                        swal.fire({
+                            title: title,
+                            text: hasil.pesan,
+                            icon: icon,
+                            button: "OK!",
+                        })
+                    }
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    errorNotification();
+                });
+            }
+        });
+    });
+})
+
+function hapusGaleri(id_galeri) {
+    swal.fire({
+        title: "Apa Anda Yakin?",
+        text: "Menghapus Galeri Klinik Tersebut",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, Hapus!",
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+    }).then(function(result) {
+        if (result.value) {
+            $.ajax({
+                type: "post",
+                url: "{{ url('klinik/destroy-galeri') }}",
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                dataType: "json",
+                data: {
+                    id : id_galeri
+                }
+            })
+            .done(function(hasil) {
+                var tittle = "";
+                var icon = "";
+
+                if (hasil.status == true) {
+                    title = "Berhasil!";
+                    icon = "success";
+
+                    swal.fire({
+                        title: title,
+                        text: hasil.pesan,
+                        icon: icon,
+                        button: "OK!",
+                    }).then(function(result) {
+                        $('#kt_modal_galeri').modal('hide');
+                    })
+                } else {
+                    title = "Gagal!";
+                    icon = "error";
+
+                    swal.fire({
+                        title: title,
+                        text: hasil.pesan,
+                        icon: icon,
+                        button: "OK!",
+                    })
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                errorNotification();
+            });
+        }
+    });
 }
 </script>
 @endsection

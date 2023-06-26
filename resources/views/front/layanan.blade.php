@@ -203,7 +203,7 @@
             @foreach ($layanan as $item)
             <div class="col-lg-4 col-md-6 v_cari" data-filter-name="{{ strtolower($item->nama_layanan) }}">
                 {{-- <img class="img-fluid rounded" src="{{ asset('front/img/gelombang.png') }}" style="position: absolute;z-index: 1;margin-top: -1px;margin-left: -1px;height: 70px;" > --}}
-                <img class="img-fluid rounded" src="{{ asset('front/img/logo_bulat.png') }}" style="height: 80px;position: absolute;z-index:1;border-radius: 50% !important;border: 2px dashed #00378b" >
+                {{-- <img class="img-fluid rounded" src="{{ asset('front/img/logo_bulat.png') }}" style="height: 80px;position: absolute;z-index:1;border-radius: 50% !important;border: 2px dashed #00378b" > --}}
                 <div class="service-item rounded d-flex flex-column align-items-center justify-content-center text-center" style="background: #00378b;border-radius: 55px 30px !important;">
                     <div class="service-icon" style="transform: none;">
                         <img src="{{ asset($item->path . $item->icon)}}" style="width: 100px;border-radius: 50%;">

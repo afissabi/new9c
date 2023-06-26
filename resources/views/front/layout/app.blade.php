@@ -190,7 +190,7 @@
                             </div>
                             <div class="d-flex mb-2">
                                 <i class="bi bi-telephone text-primary me-2"></i>
-                                <p class="mb-0">031-59177353 <br> +6281 8031 12017</p>
+                                <p class="mb-0">Office : 031-591 77353 <br> +6281 8031 12017</p>
                             </div>
                             <div class="d-flex mt-4">
                                 <a class="btn btn-primary btn-square me-2" href="https://twitter.com/9orthodontics" target="_blank"><i class="fab fa-twitter fw-normal"></i></a>

@@ -202,7 +202,7 @@
                 <div class="col-lg-3 wow slideInUp" data-wow-delay="0.3s">
                     <img class="img-fluid rounded" src="{{ asset('front/img/logo_bulat.png') }}" style="height: 70px;position: absolute;margin-top: -19px;border-radius: 50% !important;border: 3px dashed #1574c0;" >
                     {{-- <div class="team-item rounded overflow-hidden" style="background-image: url('{{ asset('front/img/bg-team.png') }}');background-size: cover;background-repeat: no-repeat;"> --}}
-                        <div class="team-item rounded overflow-hidden" style="background-image: linear-gradient(180deg, #1575c1, #163284);border-radius: 80px 0px 0px 0px !important;background-size: cover;background-repeat: no-repeat;">
+                    <div class="team-item rounded overflow-hidden" style="background-image: linear-gradient(180deg, #1575c1, #163284);border-radius: 80px 0px 0px 0px !important;background-size: cover;background-repeat: no-repeat;">
                         <div class="team-img position-relative overflow-hidden">
                             <img class="img-fluid w-100" src="{{ asset($item->path . $item->foto) }}" alt="">
                             <div class="team-social">

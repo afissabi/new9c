@@ -8,6 +8,7 @@ use App\Helpers\front\Helper;
 use App\Mail\SendEmail;
 use App\Models\BankPencarian;
 use App\Models\DetailUser;
+use App\Models\GaleriKlinik;
 use App\Models\M_klinik;
 use App\Models\M_operasional;
 use App\Models\M_pembayaran;
@@ -1078,12 +1079,14 @@ class FrontController extends Controller
     public function cabangDetail($id)
     {
         $klinik = M_klinik::where('id_klinik',decrypt($id))->first();
+        $galeri = GaleriKlinik::where('id_klinik',decrypt($id))->get();
         $jam = M_operasional::where('id_klinik',decrypt($id))->get();
 
         $data = [
             'menu_active'   => 'cabang',
             'parent_active' => '',
             'klinik' => $klinik,
+            'galeri' => $galeri,
             'jam' => $jam,
         ];
 

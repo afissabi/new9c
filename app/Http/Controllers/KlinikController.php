@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GaleriKlinik;
 use App\Models\M_klinik;
 use App\Models\M_operasional;
 use App\Models\Master\Dokter_layanan;
@@ -15,7 +16,10 @@ use App\Models\Master\Mapping_layanan;
 use App\Models\Master\Mapping_pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Carbon\Carbon;
 use DB;
+use Image;
+use Str;
 
 class KlinikController extends Controller
 {
@@ -233,6 +237,94 @@ class KlinikController extends Controller
         ];
 
         return response()->json($data);
+    }
+
+    public function galeri(Request $request)
+    {
+        $galeri = GaleriKlinik::where('id_klinik', $request->klinik)->get();
+        
+        $html  = '';
+        foreach ($galeri as $value) {
+            $html .= '
+            <div class="col-lg-4">
+                <img src="' . asset($value->path . $value->gambar) . '" class="" alt="" style="border: 1px dashed #5738a1;width:100%;"/><br>
+                <center><a href="#!" class="btn btn-danger" onClick="hapusGaleri(' . $value->id_galeri_klinik . ')"><i class="fa fa-trash"></i></a></center>
+            </div>';
+        }
+
+        $data = [
+            'id_klinik' => $request->klinik,
+            'html' => $html,
+        ];
+
+        return response()->json($data);
+    }
+
+    public function SimpanGaleri(Request $request)
+    {
+        $data = new GaleriKlinik();
+        $id = GaleriKlinik::max('id_galeri_klinik') + 1;
+
+        if ($request->file('gambar')) {
+            $image = $request->file('gambar');
+            $destinationPathThum = public_path('/img/klinik/thumbnail');
+            $img = Image::make($image->path());
+            $imageName =  'kl-' . Carbon::now()->format("Y-m-d") . '-' . $id . '.png';
+
+            $img->resize(200, 400, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($destinationPathThum . '/' . $imageName);
+
+            $destinationPath = public_path('/img/klinik/');
+            $image->move($destinationPath, $imageName);
+            $destinationPathori = "img/klinik/thumbnail/";
+        } else {
+            $imageName = 'default.jpg';
+            $destinationPathori = "img/";
+        }
+
+        $data->id_klinik   = $request->klinik;
+        $data->gambar      = $imageName;
+        $data->path        = $destinationPathori;
+        $data->keterangan  = $request->keterangan;
+
+        try {
+            $data->save();
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'pesan'  => 'Data Berhasil Disimpan!',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'pesan'  => 'Maaf, Data Gagal Tersimpan!',
+                'err'    => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function destroyGaleri(Request $request)
+    {
+
+        $data = GaleriKlinik::findOrFail($request->id);
+
+        if ($data->delete()) {
+
+            return response()->json([
+                'status' => true,
+                'pesan'  => 'Data Terhapus!',
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'pesan'  => 'Maaf, Data Gagal Terhapus!',
+            ]);
+        }
     }
 
     public function layanan(Request $request)
