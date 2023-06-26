@@ -29,6 +29,7 @@ class ArtikelController extends Controller
         $active_press = '';
         $active_event = '';
         $active_galeri = '';
+        $active_fasilitas = '';
 
         if($kategori == 'blog'){
             $active_blog = 'active';
@@ -42,6 +43,8 @@ class ArtikelController extends Controller
             $active_event = 'active';
         }else if($kategori == 'galeri'){
             $active_galeri = 'active';
+        }else if($kategori == 'fasilitas'){
+            $active_fasilitas = 'active';
         }
 
         $data = [
@@ -53,6 +56,7 @@ class ArtikelController extends Controller
             'active_press' => $active_press,
             'active_event' => $active_event,
             'active_galeri' => $active_galeri,
+            'active_fasilitas' => $active_fasilitas,
         ];
 
         return view('website.artikel', $data);
@@ -66,6 +70,7 @@ class ArtikelController extends Controller
         $active_press = '';
         $active_event = '';
         $active_galeri = '';
+        $active_fasilitas = '';
 
         if($kategori == 'blog'){
             $active_blog = 'active';
@@ -79,6 +84,8 @@ class ArtikelController extends Controller
             $active_event = 'active';
         }else if($kategori == 'galeri'){
             $active_galeri = 'active';
+        }else if($kategori == 'fasilitas'){
+            $active_fasilitas = 'active';
         }
         
 
@@ -90,6 +97,7 @@ class ArtikelController extends Controller
             'active_press' => $active_press,
             'active_event' => $active_event,
             'active_galeri' => $active_galeri,
+            'active_fasilitas' => $active_fasilitas,
         ];
 
         return view('website.artikelcreate',$data);
@@ -223,6 +231,7 @@ class ArtikelController extends Controller
         $active_press = '';
         $active_event = '';
         $active_galeri = '';
+        $active_fasilitas = '';
 
         if($artikel->kategori == 'blog'){
             $active_blog = 'active';
@@ -236,6 +245,8 @@ class ArtikelController extends Controller
             $active_event = 'active';
         }else if($artikel->kategori == 'galeri'){
             $active_galeri = 'active';
+        }else if($kategori == 'fasilitas'){
+            $active_fasilitas = 'active';
         }
 
         $data = [
@@ -247,6 +258,7 @@ class ArtikelController extends Controller
             'active_press' => $active_press,
             'active_event' => $active_event,
             'active_galeri' => $active_galeri,
+            'active_fasilitas' => $active_fasilitas,
         ];
 
         return view('website.artikeledit', $data);

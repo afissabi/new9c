@@ -37,7 +37,7 @@
 @endsection
 
 @section('btn-register')
-<a href="{{ url('register/zero-service') }}"><img class="img-fluid rounded btn-reg" src="{{ asset('front/img/regnow.png') }}" style="width: 170px;" ></a>
+<a href="{{ url('register/zero-service') }}"><img class="img-fluid rounded btn-reg" src="{{ asset('front/img/regnew.png') }}" style="width: 120px;" ></a>
 @endsection
 
 @section('header-carousel')
@@ -131,7 +131,7 @@
 <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container py-5">
         <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-            <h5 class="fw-bold text-primary text-uppercase">Kenapa Harus Kami ?</h5>
+            <h5 class="fw-bold text-primary text-uppercase">Kenapa Harus Dengan Kami ?</h5>
             <h1 class="mb-0">Kami disini siap membantu anda kapanpun</h1>
         </div>
         <div class="row g-5">
@@ -141,14 +141,14 @@
                         <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                             <i class="fa fa-cubes text-white"></i>
                         </div>
-                        <h4>Fasilitas Lengkap</h4>
+                        <a href="{{ url('/fasilitas') }}"><h4>Fasilitas Lengkap</h4></a>
                         <p class="mb-0">Rasakan pengalaman pelayanan di klinik kami dengan fasilitas terbaik</p>
                     </div>
                     <div class="col-12 wow zoomIn" data-wow-delay="0.6s">
                         <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                             <i class="fa fa-award text-white"></i>
                         </div>
-                        <h4>Layanan Terlengkap</h4>
+                        <a href="{{ url('/layanan') }}"><h4>Layanan Terlengkap</h4></a>
                         <p class="mb-0">Kami memiliki layanan yang cukup lengkap untuk kesehatan gigi anda</p>
                     </div>
                 </div>
@@ -164,14 +164,14 @@
                         <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                             <i class="fa fa-users-cog text-white"></i>
                         </div>
-                        <h4>Professional Staff</h4>
+                        <a href="{{ url('/tim-dokter') }}"><h4>Professional Staff</h4></a>
                         <p class="mb-0">Kami memiliki dokter-dokter terbaik yang siap membantu anda</p>
                     </div>
                     <div class="col-12 wow zoomIn" data-wow-delay="0.8s">
                         <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                             <i class="fa fa-phone-alt text-white"></i>
                         </div>
-                        <h4>24/7 Support</h4>
+                        <a href="{{ url('/hubungi-kami') }}"><h4>24/7 Support</h4></a>
                         <p class="mb-0">Kami siap membantu anda</p>
                     </div>
                 </div>
@@ -244,13 +244,13 @@
     <div class="container py-5">
         <div class="section-title text-center position-relative pb-3 mb-4 mx-auto" style="max-width: 600px;">
             <h5 class="fw-bold text-primary text-uppercase">Sharing Experience</h5>
-            <h4 class="mb-0">Apa yang dirasakan oleh pasien kami ?</h4>
+            <h4 class="mb-0">Pengalaman pasien treatment di klinik 9C Orthodontics?</h4>
         </div>
         <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.6s" id="testimoni">
             @foreach ($testi as $item)
-                <div class="testimonial-item bg-light my-4" style="border-radius: 85px 0px 85px 0px;border: 2px solid #0545f5;margin-right: 10px;margin-left: 10px;">
+                <div class="testimonial-item bg-light my-4" style="border-radius: 85px 0px 85px 0px;border: 2px dashed #0545f5;margin-right: 10px;margin-left: 10px;">
                     <div class="d-flex align-items-center border-bottom pt-5 pb-4 px-5" >
-                        <img class="img-fluid" src="{{ asset($item->path . $item->gambar) }}" style="width: 120px;height: 120px;margin-top: -70px;margin-left: -30px;">
+                        <img class="img-fluid" src="{{ asset($item->path . $item->gambar) }}" style="width: 150px;height: 150px;margin-top: -89px;margin-left: -65px;">
                         <div class="ps-4">
                             <h4 class="text-primary mb-1">{{ $item->judul }}</h4>
                             {{-- <small class="text-uppercase">Profession</small> --}}

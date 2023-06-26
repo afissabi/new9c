@@ -34,6 +34,11 @@ class PromoController extends Controller
         $data_tables = [];
         foreach ($datas as $key => $value) {
             $data_tables[$key][] = $key + 1;
+            if($value->is_best == 0){
+                $data_tables[$key][] = '<center><span class="badge badge-danger">Tidak</span></center>';
+            }else if ($value->is_best == 1){
+                $data_tables[$key][] = '<center><span class="badge badge-info">Ya</span></center>';
+            }
             $data_tables[$key][] = '<center>' . \Carbon\Carbon::parse($value->tgl_awal)->format('d-m-Y') . ' - ' . \Carbon\Carbon::parse($value->tgl_akhir)->format('d-m-Y') . '</center>';
             $data_tables[$key][] = '<center><img src="' . asset('img/promo/thumbnail/' . $value->gambar) . '" style="width: 100px;"></center>';
             $data_tables[$key][] = '<center>' . $value->judul_promo . '</center>';
@@ -152,6 +157,7 @@ class PromoController extends Controller
         $data->isi_promo   = $request->isi;
         $data->tgl_awal    = $request->tgl_awal;
         $data->tgl_akhir   = $request->tgl_akhir;
+        $data->is_best     = $request->best;
         $data->harga       = str_replace('.', '', trim($request->harga));
         $data->status      = 1;
         $data->gambar      = $imageName;
@@ -273,6 +279,7 @@ class PromoController extends Controller
         $data->isi_promo   = $request->isi;
         $data->tgl_awal    = $request->tgl_awal;
         $data->tgl_akhir   = $request->tgl_akhir;
+        $data->is_best     = $request->best;
         $data->harga       = str_replace('.', '', trim($request->harga));
         $data->status      = 1;
         $data->gambar      = $imageName;

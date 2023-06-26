@@ -56,6 +56,7 @@ Route::post('simpan-pesan', [FrontController::class, 'sendPesan'])->name('kirim-
 
 Route::get('/misi-sosial', [FrontController::class, 'misiSosial'])->name('misi-sosial');
 Route::get('/event', [FrontController::class, 'Event'])->name('event');
+Route::get('/fasilitas', [FrontController::class, 'Fasilitas'])->name('fasilitas');
 
 Route::get('/artikel', [FrontController::class, 'artikel'])->name('pilih-artikel');
 Route::get('/read-artikel/{tipe}/{slug}', [FrontController::class, 'artikelRead'])->name('baca-artikel');

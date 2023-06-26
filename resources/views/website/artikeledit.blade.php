@@ -83,6 +83,9 @@
                     <a class="nav-link text-active-primary me-6 {{ $active_event }}" href="{{ url('website/artikel/event') }}">Event</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link text-active-primary me-6 {{ $active_fasilitas }}" href="{{ url('website/artikel/fasilitas') }}">Fasilitas</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-active-primary me-6 {{ $active_sosial }}" href="{{ url('website/artikel/misi-sosial') }}">Misi Sosial</a>
                 </li>
                 <li class="nav-item">

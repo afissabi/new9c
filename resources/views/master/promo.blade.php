@@ -87,6 +87,7 @@
             <thead>
                 <tr role="row">
                     <th width="2%"><center>NO</center></th>
+                    <th><center>Best Deal</center></th>
                     <th><center>Tanggal Berlaku</center></th>
                     <th><center>Gambar</center></th>
                     <th><center>Judul Promo</center></th>
@@ -169,6 +170,15 @@
                             <input type="date" class="form-control" name="tgl_akhir" placeholder="Tanggal Akhir">
                         </div>
                     </div>
+                    <div class="row mb-10">
+                        <label class="col-lg-3 col-form-label text-lg-end required">Best Deal :</label>
+                        <div class="col-lg-3">
+                            <select class="form-control" name="best" required>
+                                <option value="0">Tidak</option>
+                                <option value="1">Ya</option>
+                            </select>
+                        </div>
+                    </div>
             </div>
 
             <div class="modal-footer">
@@ -243,6 +253,15 @@
                         </div>
                         <div class="col-lg-6">
                             <input type="date" class="form-control" name="tgl_akhir" id="tgl_akhir" placeholder="Tanggal Akhir">
+                        </div>
+                    </div>
+                    <div class="row mb-10">
+                        <label class="col-lg-3 col-form-label text-lg-end required">Best Deal :</label>
+                        <div class="col-lg-3">
+                            <select class="form-control" name="best" id="best" required>
+                                <option value="0">Tidak</option>
+                                <option value="1">Ya</option>
+                            </select>
                         </div>
                     </div>
             </div>
@@ -513,7 +532,7 @@
                     $('#harga').val(msg.harga);
                     $('#tgl_awal').val(msg.tgl_awal);
                     $('#tgl_akhir').val(msg.tgl_akhir);
-
+                    $('#best').val(msg.edit.is_best).trigger("change");
                 }
                 // Display Modal
                 $('#kt_modal_edit').modal('show');

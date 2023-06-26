@@ -140,7 +140,7 @@ class FrontController extends Controller
     public function getPromo(Request $request)
     {
         $blog  = '';
-        $promo = M_promo::where('status',1)->orderBy('updated_at','DESC')->limit($request->need)->get();
+        $promo = M_promo::where('status',1)->where('is_best',1)->orderBy('updated_at','DESC')->limit($request->need)->get();
 
         foreach ($promo as $value) {
             $blog .= '
@@ -466,6 +466,19 @@ class FrontController extends Controller
         ];
 
         return view('front.event', $data);
+    }
+
+    public function Fasilitas()
+    {
+        $artikel = M_artikel::where('kategori','fasilitas')->orderBy('updated_at','DESC')->paginate(20);
+
+        $data = [
+            'menu_active'   => 'Artikel',
+            'parent_active' => '',
+            'artikel' => $artikel,
+        ];
+
+        return view('front.fasilitas', $data);
     }
 
 

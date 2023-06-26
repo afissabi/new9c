@@ -86,6 +86,9 @@
                     <a class="nav-link text-active-primary me-6 {{ $active_event }}" href="{{ url('website/artikel/event') }}">Event</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link text-active-primary me-6 {{ $active_fasilitas }}" href="{{ url('website/artikel/fasilitas') }}">Fasilitas</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-active-primary me-6 {{ $active_sosial }}" href="{{ url('website/artikel/misi-sosial') }}">Misi Sosial</a>
                 </li>
                 <li class="nav-item">
@@ -101,7 +104,7 @@
 
 <div class="card card-flush shadow-sm">
     <div class="card-header border-0 pt-6 justify-content-end ribbon ribbon-start">
-        <div class="ribbon-label bg-danger" style="font-size: large;background-color:#d00 !important;">{{ ucfirst($kategori) }} Website</div>
+        <div class="ribbon-label bg-danger" style="font-size: large;background-color:#d00 !important;">{{ ucfirst($kategori) }}</div>
         <div class="card-toolbar">
             <a href="{{ url('website/artikel/create/' . $kategori) }}" class="btn btn-sm btn-orange" style="background: #ff7c00;color: #fff;">
                 <i class="fa fa-plus" style="color: #fff"></i> {{ $kategori }}
