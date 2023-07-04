@@ -209,9 +209,12 @@
                         <img src="{{ asset($item->path . $item->icon)}}" style="width: 100px;border-radius: 50%;">
                     </div>
                     <h4 class="mb-3" style="color: #fff;">{{ $item->nama_layanan }}</h4>
+                    <a class="btn btn-lg btn-primary rounded" href="" style="left: 5%;width: fit-content;margin-top: 24px;position: absolute;margin-bottom: 50px;font-size: 10px;color: #fff;">
+                        Rp {{ number_format($item->harga, 0,",",".") }},-
+                    </a>
                     <p class="m-0" style="color: #d8ff00;">{{ $item->keterangan }}</p>
-                    <a class="btn btn-lg btn-primary rounded" href="{{ url('register/' . $item->slug_layanan) }}">
-                        <i class="bi bi-arrow-right"></i>
+                    <a class="btn btn-lg btn-primary rounded" href="{{ url('register/' . $item->slug_layanan) }}" style="width: fit-content;margin-left: -50px;font-size: 16px;margin-bottom: 5px;">
+                        <i class="bi bi-arrow-right"></i> Register
                     </a>
                 </div>
             </div>
