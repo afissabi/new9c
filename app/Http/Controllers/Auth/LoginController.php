@@ -52,9 +52,9 @@ class LoginController extends Controller
             // $request->validate([
             //     'g-recaptcha-response' => 'required|captcha'
             // ]);
-            if(!$request['g-recaptcha-response']){
-                return $this->successJson("Oops, captchanya diisi dulu dong", 'Captcha Salah', 199);
-            }
+            // if(!$request['g-recaptcha-response']){
+            //     return $this->successJson("Oops, captchanya diisi dulu dong", 'Captcha Salah', 199);
+            // }
 
             $this->checkRegistered($request->username);
             

@@ -28,7 +28,7 @@
                 <h3 class="mb-4" style="background: #263b73;width: fit-content;padding: 10px;border-radius: 27px 6px 40px 10px;color: #fff;">Rp {{ number_format($promo->harga, 0,",",".") }},-</h3>
                 
                 <div class="d-flex align-items-center mb-4 wow fadeIn" data-wow-delay="0.6s">
-                    <a href="{{ url('register/promo/' . $promo->slug_judul) }}"><img class="img-fluid rounded" src="{{ asset('front/img/regnow.png') }}" style="width: 170px;" ></a>&nbsp;&nbsp;&nbsp;
+                    <a href="{{ url('register/promo/' . $promo->slug_judul) }}"><img class="img-fluid rounded" src="{{ asset('front/img/regnew.png') }}" style="width: 170px;" ></a>&nbsp;&nbsp;&nbsp;
                     <div class="bg-primary d-flex align-items-center justify-content-center rounded" style="width: 60px; height: 60px;">
                         <i class="fa fa-phone-alt text-white"></i>
                     </div>

@@ -92,7 +92,7 @@
                     <th><center>Status</center></th>
                     <th><center>Harga / Tarif</center></th>
                     <th><center>Metode Bayar</center></th>
-                    {{-- <th><center>Mapping</center></th>-0= --}}
+                    <th><center>Mapping</center></th>
                     <th width="15%"><center>Detail</center></th>
                 </tr>
             </thead>

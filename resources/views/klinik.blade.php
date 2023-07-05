@@ -446,7 +446,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="" id="layanan-dokter" class="btn btn-info"><i class="fas fa-eye"></i> Tambah Layanan</a>
+                {{-- <a href="" id="layanan-dokter" class="btn btn-info"><i class="fas fa-eye"></i> Tambah Layanan</a> --}}
                 <button type="button" class="btn btn-warning" data-bs-dismiss="modal"><i class="fas fa-times-circle"></i> Close</button>
             </div>
         </div>
@@ -703,7 +703,7 @@ $('#listing').on('click', '.layanan', function (e) {
             // Add response in Modal body
             if(msg){
                 $('#daftar-layanan').html(msg.html);
-                document.getElementById("layanan-dokter").href = `{{ url('klinik/detail-layanan/${idklinik}') }}`;
+                // document.getElementById("layanan-dokter").href = `{{ url('klinik/detail-layanan/${idklinik}') }}`;
             }
             // Display Modal
             $('#kt_modal_layanan').modal('show');

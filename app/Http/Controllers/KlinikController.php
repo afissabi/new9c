@@ -333,20 +333,20 @@ class KlinikController extends Controller
         
         $html  = '';
 
-        foreach ($layanan as $value) {
-            $html .= '
-            <div class="col-lg-4">
-                <div class="d-flex bg-danger align-items-center mb-7" style="padding: 5px;border-radius: 5px;">
+            foreach ($layanan as $value) {
+                $html .= '
+                <div class="col-lg-4">
+                    <div class="d-flex bg-danger align-items-center mb-7" style="padding: 5px;border-radius: 5px;">
                     <div class="symbol symbol-50px me-5">
                         <img src="' . asset($value->layan->path . $value->layan->icon) . '" class="" alt="" style="border: 1px dashed #5738a1;"/>
                     </div>
                     <div class="flex-grow-1">
                         <h4 class="fw-bolder text-hover-primary fs-6" style="color: #fff;">' . $value->layan->nama_layanan . '</h4>
                     </div>
-                </div>
-            </div>';
-        }
-
+                    </div>
+                </div>';
+            }
+        
         
 
         $data = [

@@ -70,7 +70,10 @@ class LayananController extends Controller
 
             $data_tables[$key][] = $metode;
 
-
+            $data_tables[$key][] = '<center>
+                <a href="javascript:void(0)" class="klinik text-dark" data-id_layanan="' . $value->id_layanan . '"><i class="fa fa-edit text-info"></i> Mapping Klinik</a><br>
+            </center>';
+            
             $aksi = '';
             $aksi .= '<center>';
             $aksi .= '&nbsp;<a href="javascript:void(0)" class="edit text-dark" data-id_layanan="' . $value->id_layanan . '"><i class="fa fa-edit text-info"></i> Edit</a>';
