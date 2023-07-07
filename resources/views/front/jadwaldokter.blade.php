@@ -191,7 +191,7 @@
             <div class="col-lg-4 mb-5">
                 <img class="img-fluid rounded" src="{{ asset('front/img/logo_bulat.png') }}" style="height: 100px;position: absolute;margin-top: -10px;border-radius: 50% !important;border: 3px dashed #1574c0;" >
                 {{-- <div class="team-item rounded overflow-hidden" style="background-image: url('{{ asset('front/img/bg-team.png') }}');background-size: cover;background-repeat: no-repeat;"> --}}
-                    <div class="team-item rounded overflow-hidden" style="background-image: linear-gradient(180deg, #1575c1, #163284);border-radius: 80px 0px 0px 0px !important;background-size: cover;background-repeat: no-repeat;">
+                <div class="team-item rounded overflow-hidden" style="background-image: linear-gradient(180deg, #1575c1, #163284);border-radius: 80px 0px 0px 0px !important;background-size: cover;background-repeat: no-repeat;">
                     <div class="team-img position-relative overflow-hidden">
                         <img class="img-fluid w-100" src="{{ asset('img/pegawai/' . $dokter->foto) }}" alt="">
                     </div>
@@ -200,6 +200,8 @@
                         <p class="text-uppercase m-0">{{ $dokter->spesialis }}</p>
                     </div>
                 </div>
+                <h5 style="border-top: 1px dashed;margin-top: 10px;border-bottom: 1px dashed;padding: 10px;">Profil</h5>
+                <div style="text-align: justify;margin-top: 10px;">{!! $dokter->profil !!}</div>
             </div>
             <div class="col-lg-8">
                 @foreach ($klinik as $value)

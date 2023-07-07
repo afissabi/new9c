@@ -76,8 +76,8 @@ class FrontController extends Controller
     public function summaryTotal()
     {
         $klinik = M_klinik::count();
-        $jabatan = M_jabatan::where('nama_jabatan', 'dokter')->first();
-        $dokter = M_pegawai::where('m_pegawai.jabatan',$jabatan->id_jabatan)->count();
+        // $jabatan = M_jabatan::where('nama_jabatan', 'like', '%dokter%')->first();
+        $dokter = M_pegawai::wherein('m_pegawai.jabatan',[3,4])->count();
         $layanan = M_layanan::count();
         // $testi = Konten_section::where('id_section',6)->get();
 
@@ -192,8 +192,8 @@ class FrontController extends Controller
             return $page;
         });
 
-        $jabatan = M_jabatan::where('nama_jabatan', 'dokter')->first();
-        $data = M_pegawai::where('jabatan',$jabatan->id_jabatan)->paginate(2);
+        // $jabatan = M_jabatan::where('nama_jabatan', 'like', '%dokter%')->first();
+        $data = M_pegawai::wherein('m_pegawai.jabatan',[3,4])->paginate(2);
 
         foreach ($data as $value) {
             $dokter .= '
@@ -257,7 +257,7 @@ class FrontController extends Controller
                         <div class="get-blog" style="font-size: 10px !important;">
                             <p>' . substr($value->konten, 0, 150) . '</p>
                         </div>
-                        <a class="text-uppercase" href="' . url('read-artikel/blog/' . $value->slug_judul) . '">Read More <i class="bi bi-arrow-right"></i></a>
+                        <a class="text-uppercase" href="' . url('read-artikel/blog/' . $value->slug_judul . '/' . $value->id_artikel) . '">Read More <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>';
@@ -349,9 +349,16 @@ class FrontController extends Controller
     public function recentMisol(Request $request)
     {
         $blog  = '';
-        $artikel = M_artikel::where('kategori','misi-sosial')->orderBy('updated_at','DESC')->limit($request->need)->get();
-
-        foreach ($artikel as $value) {
+        $artikel = M_artikel::select('id_artikel')->where('kategori','misi-sosial')->orderBy('updated_at','DESC')->limit($request->need)->get();
+        
+        $id_artikel = array();
+        foreach($artikel as $value){
+            $id_artikel[] = $value->id_artikel;
+        }
+        
+        $recent = M_artikel::where('kategori','event')->whereNotIn('id_artikel',$id_artikel)->orderBy('updated_at','DESC')->limit(5)->get();
+        
+        foreach ($recent as $value) {
             $blog .= '
             <div class="d-flex rounded overflow-hidden mb-3">
                 <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" style="width: 100px; height: 100px; object-fit: cover;z-index: 1;" alt="">
@@ -382,7 +389,7 @@ class FrontController extends Controller
                 <div class="blog-item bg-light rounded overflow-hidden">
                     <div class="blog-img position-relative overflow-hidden">
                         <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" alt="" style="max-height: 205px;width: -webkit-fill-available;">
-                        <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Misi Sosial</a>
+                        <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Event</a>
                     </div>
                     <div class="p-4" style="max-height: 225px;min-height: 225px;">
                         <div class="d-flex mb-3">
@@ -393,7 +400,7 @@ class FrontController extends Controller
                         <div class="get-blog" style="font-size: 10px !important;">
                             <p>' . substr($value->konten, 0, 150) . '</p>
                         </div>
-                        <a class="text-uppercase" href="' . url('read-artikel/misi-sosial/' . $value->slug_judul) . '">Read More <i class="bi bi-arrow-right"></i></a>
+                        <a class="text-uppercase" href="' . url('read-artikel/event/' . $value->slug_judul) . '">Read More <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>';
@@ -405,9 +412,16 @@ class FrontController extends Controller
     public function recentEvent(Request $request)
     {
         $blog  = '';
-        $artikel = M_artikel::where('kategori','event')->orderBy('updated_at','DESC')->limit($request->need)->get();
+        $artikel = M_artikel::select('id_artikel')->where('kategori','event')->orderBy('updated_at','DESC')->limit($request->need)->get();
+        
+        $id_artikel = array();
+        foreach($artikel as $value){
+            $id_artikel[] = $value->id_artikel;
+        }
+        
+        $recent = M_artikel::where('kategori','event')->whereNotIn('id_artikel',$id_artikel)->orderBy('updated_at','DESC')->limit(5)->get();
 
-        foreach ($artikel as $value) {
+        foreach ($recent as $value) {
             $blog .= '
             <div class="d-flex rounded overflow-hidden mb-3">
                 <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" style="width: 100px; height: 100px; object-fit: cover;z-index: 1;" alt="">
@@ -1033,7 +1047,9 @@ class FrontController extends Controller
 
     public function artikelRead(Request $request)
     {
+        // $read = M_artikel::where('kategori',$request->tipe)->where('slug_judul',$request->slug)->where('id_artikel', $request->id)->first();
         $read = M_artikel::where('kategori',$request->tipe)->where('slug_judul',$request->slug)->first();
+        
         $plain = Konten_section::where('id_section',10)->first();
 
         $data = [
@@ -1095,8 +1111,8 @@ class FrontController extends Controller
 
     public function timDokter()
     {
-        $jabatan = M_jabatan::where('nama_jabatan', 'dokter')->first();
-        $dokter = M_pegawai::where('jabatan',$jabatan->id_jabatan)->paginate(16);
+        // $jabatan = M_jabatan::where('nama_jabatan', 'like', '%dokter%')->first();
+        $dokter = M_pegawai::wherein('m_pegawai.jabatan',[3,4])->paginate(16);
         $vendor = Konten_section::where('id_section',7)->get();
 
         $data = [

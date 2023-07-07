@@ -211,8 +211,9 @@ class KlinikController extends Controller
 
     public function dokter(Request $request)
     {
-        $jabatan = M_jabatan::where('nama_jabatan', 'dokter')->first();
-        $dokter = M_pegawai::JOIN('mapping_pegawai as mp','mp.id_pegawai','=','m_pegawai.id_pegawai')->where('mp.deleted_at',null)->where('id_klinik', $request->klinik)->where('m_pegawai.jabatan',$jabatan->id_jabatan)->get();
+        // $jabatan = M_jabatan::select('id_jabatan')->where('nama_jabatan', 'like', '%dokter%')->get()->toArray();
+        // dd($jabatan[0]['id_jabatan']);
+        $dokter = M_pegawai::JOIN('mapping_pegawai as mp','mp.id_pegawai','=','m_pegawai.id_pegawai')->where('mp.deleted_at',null)->where('id_klinik', $request->klinik)->wherein('m_pegawai.jabatan',[3,4])->get();
         
         $html  = '';
         foreach ($dokter as $value) {

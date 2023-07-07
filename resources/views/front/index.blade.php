@@ -142,14 +142,14 @@
                             <i class="fa fa-cubes text-white"></i>
                         </div>
                         <a href="{{ url('/fasilitas') }}"><h4>Fasilitas Lengkap</h4></a>
-                        <p class="mb-0">Rasakan pengalaman pelayanan di klinik kami dengan fasilitas terbaik</p>
+                        <p class="mb-0">Rasakan pengalaman berbeda pelayanan di klinik kami dengan berbagai fasilitas nyaman dan terbaik</p>
                     </div>
                     <div class="col-12 wow zoomIn" data-wow-delay="0.6s">
                         <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                             <i class="fa fa-award text-white"></i>
                         </div>
                         <a href="{{ url('/layanan') }}"><h4>Layanan Terlengkap</h4></a>
-                        <p class="mb-0">Kami memiliki layanan yang cukup lengkap untuk kesehatan gigi anda</p>
+                        <p class="mb-0">Dapatkan layanan yang cukup lengkap untuk perawatan dan solusi kesehatan gigi anda</p>
                     </div>
                 </div>
             </div>
@@ -165,14 +165,14 @@
                             <i class="fa fa-users-cog text-white"></i>
                         </div>
                         <a href="{{ url('/tim-dokter') }}"><h4>Professional Staff</h4></a>
-                        <p class="mb-0">Kami memiliki dokter-dokter terbaik yang siap membantu anda</p>
+                        <p class="mb-0">Kami memiliki tenaga ahli sesuai dengan kompetensi di bidangnya, para dokter spesialis dan paramedis terbaik yang siap membantu anda</p>
                     </div>
                     <div class="col-12 wow zoomIn" data-wow-delay="0.8s">
                         <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                             <i class="fa fa-phone-alt text-white"></i>
                         </div>
                         <a href="{{ url('/hubungi-kami') }}"><h4>24/7 Support</h4></a>
-                        <p class="mb-0">Kami siap membantu anda</p>
+                        <p class="mb-0">Berbagai pertanyaan dan konsultasi, silahkan menghubungi kami</p>
                     </div>
                 </div>
             </div>

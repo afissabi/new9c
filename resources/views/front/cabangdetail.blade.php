@@ -99,7 +99,7 @@
                 </table>
             </div>
             <div class="col-lg-6 wow slideInUp" data-wow-delay="0.6s">
-                <iframe src="{{ $klinik->maps }}" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="{{ $klinik->maps }}" width="600" height="328" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </div>

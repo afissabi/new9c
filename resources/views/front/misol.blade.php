@@ -156,13 +156,13 @@
         </div>
         <div class="owl-carousel testimonial-carousel wow fadeInUp gallery" data-wow-delay="0.6s" id="testimoni">
             @foreach ($galeri as $item)
+            <a href="{{ $item->link }}" target="_blank" style="text-decoration: auto;">
                 <div class="testimonial-item bg-light my-4" >
                     <div class="d-flex align-items-center thumb" >
-                        <a href="">
-                            <figure><img class="img-fluid img-thumbnail" src="{{ asset($item->path . $item->gambar) }}" alt="Random Image"></figure>
-                        </a>
+                        <figure><img class="img-fluid img-thumbnail" src="{{ asset($item->path . $item->gambar) }}" alt="Random Image"></figure>
                     </div>
                 </div>
+            </a>
             @endforeach
         </div>
     </div>
