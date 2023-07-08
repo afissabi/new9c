@@ -356,7 +356,7 @@ class FrontController extends Controller
             $id_artikel[] = $value->id_artikel;
         }
         
-        $recent = M_artikel::where('kategori','event')->whereNotIn('id_artikel',$id_artikel)->orderBy('updated_at','DESC')->limit(5)->get();
+        $recent = M_artikel::where('kategori','misi-sosial')->whereNotIn('id_artikel',$id_artikel)->orderBy('updated_at','DESC')->limit(5)->get();
         
         foreach ($recent as $value) {
             $blog .= '
@@ -364,7 +364,7 @@ class FrontController extends Controller
                 <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" style="width: 100px; height: 100px; object-fit: cover;z-index: 1;" alt="">
                 <div class="row" style="background: #0545f529;min-width: -webkit-fill-available;">
                     <div class="col-md-12 mt-3">
-                        <a href="' . url('read-artikel/misi-sosial/' . $value->slug_judul) . '" class="h6 fw-semi-bold align-items-center px-3 mb-0" style="width: 230px;">' . $value->judul . '</a>
+                        <a href="' . url('read-artikel/misi-sosial/' . $value->slug_judul) . '" class="h6 fw-semi-bold align-items-center px-3 mb-0" style="display: block;width: 320px;">' . $value->judul . '</a>
                         <div class="ml-3" style="margin-left: 16px;font-size: 12px;">
                             <small class="me-3"><i class="far fa-user text-primary me-2"></i>Admin 9C Orthodontics</small><br>
                             <small><i class="far fa-calendar-alt text-primary me-2"></i>' . \Carbon\Carbon::parse($value->updated_at)->format('d-m-Y') . '</small>
@@ -427,7 +427,7 @@ class FrontController extends Controller
                 <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" style="width: 100px; height: 100px; object-fit: cover;z-index: 1;" alt="">
                 <div class="row" style="background: #0545f529;min-width: -webkit-fill-available;">
                     <div class="col-md-12 mt-3">
-                        <a href="' . url('read-artikel/misi-sosial/' . $value->slug_judul) . '" class="h6 fw-semi-bold align-items-center px-3 mb-0" style="width: 230px;">' . $value->judul . '</a>
+                        <a href="' . url('read-artikel/misi-sosial/' . $value->slug_judul) . '" class="h6 fw-semi-bold align-items-center px-3 mb-0" style="display: block;width: 320px;">' . $value->judul . '</a>
                         <div class="ml-3" style="margin-left: 16px;font-size: 12px;">
                             <small class="me-3"><i class="far fa-user text-primary me-2"></i>Admin 9C Orthodontics</small><br>
                             <small><i class="far fa-calendar-alt text-primary me-2"></i>' . \Carbon\Carbon::parse($value->updated_at)->format('d-m-Y') . '</small>
