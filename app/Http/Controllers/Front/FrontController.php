@@ -896,39 +896,39 @@ class FrontController extends Controller
             $id_pasien = DB::table('m_pasien')->max('id_pasien') + 1;
 
             // NAMBAH USER UNTUK MEMBER BARU
-            // $member = new User();
-            // $id = User::max('id') + 1;
-            // $pas = $this->RandomPass();
-            // $member->name = $request->nama;
-            // $member->username = $request->email;
-            // $member->is_aktif = null;
-            // $member->password_see = $pas;
-            // $member->password = Hash::make($pas);
-            // $member->save();
+            $member = new User();
+            $id = User::max('id') + 1;
+            $pas = $this->RandomPass();
+            $member->name = $request->nama;
+            $member->username = $request->email;
+            $member->is_aktif = null;
+            $member->password_see = $pas;
+            $member->password = Hash::make($pas);
+            $member->save();
 
             // NAMBAH MODEL HAS ROLE
-            // $has = new ModelHasRoles();
-            // $has->model_id = $id;
-            // $has->model_type = 'App\Models\User';
-            // $has->role_id  = 4;
-            // $has->save();
+            $has = new ModelHasRoles();
+            $has->model_id = $id;
+            $has->model_type = 'App\Models\User';
+            $has->role_id  = 4;
+            $has->save();
 
             // NAMBAH DETAIL USER
-            // $detail = new DetailUser();
-            // $detail->user_id = $id;
-            // $detail->id_pasien = $id_pasien;
-            // $detail->telp = $request->telp;
-            // $detail->save();
+            $detail = new DetailUser();
+            $detail->user_id = $id;
+            $detail->id_pasien = $id_pasien;
+            $detail->telp = $request->telp;
+            $detail->save();
 
 
             // KIRIM EMAIL REGISTRASI PASIEN BARU
-            // $email = $request->email;
-            // $data = [
-            //     'user' => $request->email,
-            //     'kunci' => $pas,
-            // ];
+            $email = $request->email;
+            $data = [
+                'user' => $request->email,
+                'kunci' => $pas,
+            ];
         
-            // Mail::to($email)->send(new SendEmail($data));
+            Mail::to($email)->send(new SendEmail($data));
         }
 
         $pasien->nama_pasien = $request->nama;
