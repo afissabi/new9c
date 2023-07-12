@@ -69,7 +69,7 @@
                         <div class="testimonial-item bg-light my-4" >
                             <div class="align-items-center thumb" >
                                 <a href="">
-                                    <img class="img-fluid img-thumbnail" src="{{ asset($item->path . $item->gambar) }}" alt="Random Image">
+                                    <img class="img-fluid img-thumbnail" src="{{ asset('img/klinik/' . $item->gambar) }}" alt="Random Image">
                                 </a>
                             </div>
                         </div>

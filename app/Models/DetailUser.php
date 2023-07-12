@@ -33,4 +33,9 @@ class DetailUser extends Model
     {
         return $this->belongsTo('App\Models\Master\M_pasien', 'id_pasien');
     }
+
+    public function corp()
+    {
+        return $this->belongsTo('App\Models\Master\M_perusahaan', 'id_perusahaan');
+    }
 }

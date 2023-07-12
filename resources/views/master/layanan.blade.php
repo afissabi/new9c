@@ -93,6 +93,7 @@
                     <th><center>Harga / Tarif</center></th>
                     <th><center>Metode Bayar</center></th>
                     <th><center>Mapping</center></th>
+                    <th><center>Tipe</center></th>
                     <th width="15%"><center>Detail</center></th>
                 </tr>
             </thead>
@@ -115,6 +116,16 @@
             </div>
             <div class="modal-body">
                 <form method="post" class="kt-form kt-form--label-right" id="form">
+                    <div class="row mb-10">
+                        <label class="col-lg-3 col-form-label text-lg-end required">Tipe Layanan :</label>
+                        <div class="col-lg-6">
+                            <select name="tipe" data-control="select2" data-dropdown-parent="#kt_modal_1" data-placeholder="Pilih Tipe Layanan..." class="form-select form-select-solid" required>
+                                <option value="">Pilih Tipe...</option>
+                                <option value="UMUM">UMUM</option>
+                                <option value="REKANAN">REKANAN</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="row mb-10">
                         <label class="col-lg-3 col-form-label text-lg-end required">Nama Layanan :</label>
                         <div class="col-lg-6">
@@ -182,6 +193,16 @@
             <div class="modal-body">
                 <form method="post" class="kt-form kt-form--label-right" id="formedit">
                     <input type="hidden" class="form-control" id="id_layanan" name="id_layanan">
+                    <div class="row mb-10">
+                        <label class="col-lg-3 col-form-label text-lg-end required">Tipe Layanan :</label>
+                        <div class="col-lg-6">
+                            <select name="tipe" id="tipe" data-control="select2" data-dropdown-parent="#kt_modal_edit" data-placeholder="Pilih Tipe Layanan..." class="form-select form-select-solid" required>
+                                <option value="">Pilih Tipe...</option>
+                                <option value="UMUM">UMUM</option>
+                                <option value="REKANAN">REKANAN</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="row mb-10">
                         <label class="col-lg-3 col-form-label text-lg-end required">Nama Layanan :</label>
                         <div class="col-lg-6">
@@ -518,6 +539,7 @@
                     $('#nama_layanan').val(msg.edit.nama_layanan);
                     $('#keterangan').val(msg.edit.keterangan);
                     $('#harga').val(msg.harga);
+                    $('#tipe').val(msg.edit.tipe).trigger("change");
 
                 }
                 // Display Modal

@@ -167,6 +167,17 @@
                         </div>
                     </div>
                     <div class="row mb-10">
+                        <label class="col-lg-3 col-form-label text-lg-end required">Pilih Klinik (Hanya Untuk Admin):</label>
+                        <div class="col-lg-8">
+                            <select name="klinik" data-control="select2" data-dropdown-parent="#kt_modal_1" data-placeholder="Pilih Klinik..." class="form-select form-select-solid">
+                                <option value="">Pilih Klinik...</option>
+                                @foreach ($klinik as $item)
+                                    <option value="{{ $item->id_klinik }}">{{ $item->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-10">
                         <label class="col-lg-3 col-form-label text-lg-end required">Nama User :</label>
                         <div class="col-lg-6">
                             <input type="text" class="form-control" name="nama" placeholder="Nama User">
@@ -224,6 +235,28 @@
             <div class="modal-body">
                 <form method="post" class="kt-form kt-form--label-right" id="formedit">
                     <input type="hidden" class="form-control" id="id_user" name="id_user">
+                    <div class="row mb-10">
+                        <label class="col-lg-3 col-form-label text-lg-end required">Role Jabatan :</label>
+                        <div class="col-lg-5">
+                            <select name="role" id="role" data-control="select2" data-dropdown-parent="#kt_modal_edit" data-placeholder="Pilih Role..." class="form-select form-select-solid">
+                                <option value="">Pilih Role...</option>
+                                @foreach ($role as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-10">
+                        <label class="col-lg-3 col-form-label text-lg-end required">Pilih Klinik (Hanya Untuk Admin):</label>
+                        <div class="col-lg-8">
+                            <select name="klinik" id="klinik" data-control="select2" data-dropdown-parent="#kt_modal_1" data-placeholder="Pilih Klinik..." class="form-select form-select-solid">
+                                <option value="">Pilih Klinik...</option>
+                                @foreach ($klinik as $item)
+                                    <option value="{{ $item->id_klinik }}">{{ $item->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <div class="row mb-10">
                         <label class="col-lg-3 col-form-label text-lg-end required">Role Jabatan :</label>
                         <div class="col-lg-5">

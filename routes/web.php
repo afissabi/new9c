@@ -9,6 +9,7 @@ use App\Http\Controllers\Master\UserController;
 use App\Http\Controllers\Front\FrontController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\CorporateController;
 use App\Http\Controllers\MemberLoginController;
 use App\Http\Controllers\pegawaiController;
 use App\Http\Controllers\PembayaranController;
@@ -32,10 +33,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/pencarian-kata-kunci', [FrontController::class, 'CariKunci'])->name('pencarian-kata-kunci');
 
-Route::get('/awal', [FrontController::class, 'index']);
-Route::get('/', function () {
-    return view('front.maintenance');
-});
+Route::get('/', [FrontController::class, 'index']);
+// Route::get('/', function () {
+//     return view('front.maintenance');
+// });
 Route::get('/tim-dokter', [FrontController::class, 'timDokter'])->name('tim-dokter');
 Route::get('/tim-dokter/jadwal/{slug}', [FrontController::class, 'jadwalDokter'])->name('jadwal-dokter');
 Route::get('/layanan/klinik/pusat', [FrontController::class, 'showLayanan'])->name('layanan');
@@ -80,7 +81,7 @@ Route::get('/get-promo-register', [FrontController::class, 'formPromo'])->name('
 Route::get('/get-metode-bayar-promo', [FrontController::class, 'getMetodeBayarPromo'])->name('metode-bayar-promo');
 
 // PENDAFTARAN REGULER
-Route::get('/register/{slug}', [FrontController::class, 'pendaftaran'])->name('pendaftaran');
+Route::get('/register/{slug}/{layanan}', [FrontController::class, 'pendaftaran'])->name('pendaftaran');
 Route::get('/get-reg-klinik', [FrontController::class, 'klinikLayanan'])->name('klinik-layanan');
 Route::get('/get-reg-layanan', [FrontController::class, 'listLayanan'])->name('klinik-layanan');
 Route::get('/get-reg-tanggal', [FrontController::class, 'tanggalLayanan'])->name('tanggal-layanan');
@@ -211,9 +212,21 @@ Route::group(['middleware' => 'admin'], function () {
             Route::post('/mapping-dokter', [LayananController::class, 'savedokter'])->name('mapping-dokter');
 
             Route::get('/select-layanan', [LayananController::class, 'selectLayanan'])->name('select-layanan');
+            Route::get('/select-layanan-corporate', [LayananController::class, 'selectLayananCorp'])->name('select-layanan-corp');
             Route::post('/metode-bayar', [LayananController::class, 'metodeBayar'])->name('klinik');
             Route::post('/tambah-metode-bayar', [LayananController::class, 'tambahmetodeBayar'])->name('klinik');
             Route::post('/destroyMetode', [LayananController::class, 'destroyMetode'])->name('destroy-metode');
+        });
+
+        Route::group([
+            'prefix' => 'perusahaan',
+            'as' => 'perusahaan.',
+        ], function () {
+            Route::post('/', [pegawaiController::class, 'jabatan'])->name('index');
+            Route::post('/store', [pegawaiController::class, 'storeJabatan'])->name('store');
+            Route::post('/destroy', [pegawaiController::class, 'destroyJabatan'])->name('menu-destroy');
+            Route::post('/edit', [pegawaiController::class, 'editJabatan'])->name('store');
+            Route::post('/ubah', [pegawaiController::class, 'ubahJabatan'])->name('store');
         });
 
     });
@@ -363,5 +376,55 @@ Route::group(['middleware' => 'member'], function () {
     Route::get('/last-pay', [MemberController::class, 'lastPay'])->name('last-pembayaran');
     Route::get('/bayar', [MemberController::class, 'Bayar'])->name('last-bayar');
     Route::post('/konfirmasi-pembayaran', [MemberController::class, 'konfirBayar'])->name('konfirmasi-bayar');
+});
+
+
+// HALAMAN CORPORATE AREA
+// Route::get('/member-area', [LoginController::class, 'showLoginMember'])->name('member-area');
+Route::post('/login-corporate', [LoginController::class, 'loginCorporate'])->name('login-corporate');
+Route::post('/logout-corporate', [LoginController::class, 'logoutCorporate'])->name('logout-corporate');
+
+Route::group([
+    'prefix' => 'corporate-area',
+    'as' => 'corporate-area.',
+], function () {
+    Route::get('/', [LoginController::class, 'showLoginCorporate'])->name('corporate-area');
+    Route::get('/forget-password', [LoginController::class, 'cekEmail'])->name('cek-email');
+    Route::post('/cari-email', [LoginController::class, 'cariEmail'])->name('cari-email');
+    Route::get('/reset-password/{email}', [FrontController::class, 'ResetPassword'])->name('reset-password-email');
+    Route::post('/simpan-password', [FrontController::class, 'simpanPass'])->name('simpan-pass');
+});
+
+Route::group(['middleware' => 'corporate'], function () {
+    Route::get('/home-corporate', [CorporateController::class, 'dashboard'])->name('home-corporate');
+    Route::get('/layanan-corporate', [CorporateController::class, 'Layanan'])->name('layanan-corporate');
+    Route::get('/last-register', [CorporateController::class, 'lastRegis'])->name('last-register');
+    Route::get('/last-pay', [CorporateController::class, 'lastPay'])->name('last-pembayaran');
+    Route::get('/bayar', [CorporateController::class, 'Bayar'])->name('last-bayar');
+    Route::post('/konfirmasi-pembayaran', [CorporateController::class, 'konfirBayar'])->name('konfirmasi-bayar');
+
+    Route::group([
+        'prefix' => 'corporate',
+        'as' => 'corporate.',
+    ], function () {
+        Route::get('/daftar-pegawai', [CorporateController::class, 'pegawai'])->name('corporate-pegawai');
+        Route::post('/list-pegawai', [CorporateController::class, 'pegawaidatatable'])->name('list-datatable');
+        Route::post('/store-pegawai', [CorporateController::class, 'pegawaistore'])->name('store');
+        Route::post('/edit-pegawai', [CorporateController::class, 'pegawaiedit'])->name('edit');
+        Route::post('/ubah-pegawai', [CorporateController::class, 'pegawaiubah'])->name('store');
+        Route::post('/destroy-pegawai', [CorporateController::class, 'pegawaidestroy'])->name('destroy');
+
+        // Pendaftaran Pasien
+        Route::get('/register/{slug}/{layanan}', [CorporateController::class, 'pendaftaran'])->name('pendaftaran');
+        Route::get('/get-reg-klinik', [CorporateController::class, 'klinikLayanan'])->name('klinik-layanan');
+        Route::get('/get-reg-layanan', [CorporateController::class, 'listLayanan'])->name('klinik-layanan');
+        Route::get('/get-reg-tanggal', [CorporateController::class, 'tanggalLayanan'])->name('tanggal-layanan');
+        Route::get('/get-reg-jam', [CorporateController::class, 'jamLayanan'])->name('jam-layanan');
+        Route::get('/get-layanan-register', [CorporateController::class, 'formLayanan'])->name('register-layanan');
+        Route::get('/get-metode-bayar-layanan', [CorporateController::class, 'getMetodeBayarLayanan'])->name('metode-bayar-layanan');
+        Route::post('simpan-register/layanan', [CorporateController::class, 'layananDaftar'])->name('layanan-daftar');
+        Route::get('/thanks', [CorporateController::class, 'thanks'])->name('thanks');
+    });
+    
 });
 

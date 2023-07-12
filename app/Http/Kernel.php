@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'auth-login' => \App\Http\Middleware\AuthLogin::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'member' => \App\Http\Middleware\MemberMiddleware::class,
+        'corporate' => \App\Http\Middleware\CorporateMidlleware::class,
     ];
 }

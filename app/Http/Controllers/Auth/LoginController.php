@@ -31,11 +31,6 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    public function showLoginMember()
-    {
-        return view('auth.memberlogin');
-    }
-
     public function home()
     {
         return view('home');
@@ -124,6 +119,12 @@ class LoginController extends Controller
 
     private function checkRedirectDashboard($permissionName){
         return 'home';
+    }
+
+    // MEMBER
+    public function showLoginMember()
+    {
+        return view('auth.memberlogin');
     }
 
     public function loginMember(Request $request)
@@ -238,5 +239,60 @@ class LoginController extends Controller
         }
     }
 
+    // CORPORATE
+    public function showLoginCorporate()
+    {
+        return view('auth.corporatelogin');
+    }
 
+    public function loginCorporate(Request $request)
+    {
+        try {
+            // if(!$request['g-recaptcha-response']){
+            //     return $this->successJson("Oops, captchanya diisi dulu dong", 'Captcha Salah', 199);
+            // }
+            $this->checkRegisteredCorporate($request->username);
+            
+            $credentials = $request->only('username', 'password');
+            
+            if (Auth::attempt($credentials)) {
+
+                $user = Auth::user();            
+                Session::put('corporate', $user);
+                
+                $data = [
+                    'url' => route($this->checkRedirectCorporate('dashboard_corporate')),
+                ];
+                
+                return $this->successJson("Yayy, Anda berhasil login", $data, 222);
+            }
+
+            return $this->successJson("Oops, username atau password anda salah", 199);
+        }catch (BadResponseException $e) {
+            if($e->getCode() == 429){
+                return $this->successJson("Oops, Anda melakukan request yang tidak wajar", $e->getMessage(), 199);
+            }
+            return $this->successJson("Oops, username atau password anda salah", $e->getMessage(), 199);
+        }catch (Exception $ex) {
+            if($ex->getCode() == 999){
+                return $this->successJson("Oops, Data Anda tidak ditemukan, silahkan menghubungi Admin anda...", $ex->getMessage(), 199);
+            }
+            if($ex->getCode() == 789){
+                return $this->successJson($ex->getMessage(), $ex->getMessage(), 199);
+            }
+        }
+        
+    }
+
+    private function checkRegisteredCorporate($username){
+        $data = User::join('model_has_roles as mhr','mhr.model_id','users.id')->select('name')->where(['username' => $username,'is_aktif' => null])->where('role_id', 6)->first();
+        
+        if(!$data){
+            throw new Exception('Username / Email belum terdaftar', 999);
+        }
+    }
+
+    private function checkRedirectCorporate($permissionName){
+        return 'layanan-corporate';
+    }
 }

@@ -201,7 +201,9 @@
                     </div>
                 </div>
                 <h5 style="border-top: 1px dashed;margin-top: 10px;border-bottom: 1px dashed;padding: 10px;">Profil</h5>
-                <div style="text-align: justify;margin-top: 10px;">{!! $dokter->profil !!}</div>
+                <div style="text-align: justify;margin-top: 10px;"> <div id="read">{!! substr($dokter->profil, 0, 200) !!}</div> <button id="more" style="background: none;border: none;color: #0545f5;">Read more...</button>
+                    <div id="lanjutan" style="display: none">{!! $dokter->profil !!}</div>
+                </div>
             </div>
             <div class="col-lg-8">
                 @foreach ($klinik as $value)
@@ -267,6 +269,13 @@
 @endsection
 
 @section('custom_js')
+<script>
+    document.querySelector('#more').addEventListener('click', function() {
+        $('#read').hide();
+        $('#lanjutan').show();
+        this.style.display = 'none';
+    });
+</script>
 {{-- <script>
     // Fungsi untuk mengambil data halaman melalui Ajax
     function getData(page) {

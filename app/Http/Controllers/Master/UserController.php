@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use App\Models\DetailUser;
+use App\Models\M_klinik;
 use App\Models\Master\M_user;
 use App\Models\Master\Master;
 use App\Models\Master\Role;
@@ -28,6 +30,7 @@ class UserController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $klinik = M_klinik::all();
         $roles = ModelHasRoles::where('model_id',$user->id)->first();
 
         if($roles->role_id == 1){
@@ -39,6 +42,7 @@ class UserController extends Controller
 
         $data = [
             'role' => $role,
+            'klinik' => $klinik,
             'totalUser' => $totalUser,
         ];
 
@@ -99,6 +103,11 @@ class UserController extends Controller
         $data->username = $request->username;
         $data->is_aktif = $request->is_aktif ? null : 1;
         $data->password = Hash::make($request->password);
+        // NAMBAH DETAIL USER
+        $detail = new DetailUser();
+        $detail->user_id = $id;
+        $detail->id_klinik = $request->klinik;
+        $detail->save();
 
         $has = new ModelHasRoles;
         $has->model_id = $id;
@@ -150,6 +159,11 @@ class UserController extends Controller
             $data->password = Hash::make($request->password);
         }
         
+        // NAMBAH DETAIL USER
+        $detail = DetailUser::where('user_id',$request->id_user)->first();
+        $detail->id_klinik = $request->klinik;
+        $detail->save();
+
         $has = ModelHasRoles::where('model_id',$request->id_user)->first();
         $has->model_id = $data->id;
         $has->model_type = 'App\Models\User';

@@ -1,21 +1,8 @@
-@extends('front.layout.app')
+@extends('corporate.app')
 @section('custom_css')
 
 @endsection
 
-{{-- @section('header-carousel')
-<div class="container-fluid bg-primary py-5 bg-header" style="margin-bottom: 90px;">
-    <div class="row py-5">
-        <div class="col-12 pt-lg-5 mt-lg-5 text-center">
-            <h1 class="display-4 text-white animated zoomIn">LAYANAN KLINIK PUSAT</h1>
-        </div>
-    </div>
-</div>
-
-@endsection --}}
-@section('btn-register')
-{{-- <a href="{{ url('/register') }}"><img class="img-fluid rounded btn-reg" src="{{ asset('front/img/regnow.png') }}" style="width: 125px;" ></a> --}}
-@endsection
 @section('content')
 <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="vh-100 d-flex justify-content-center align-items-center">
@@ -34,8 +21,7 @@
                 <div class="text-center">
                     <h1>Terima Kasih !</h1>
                     <p>Telah memberikan kepercayaan kepada kami untuk melayani anda...</p>
-                    <p>Silahkan periksai email anda untuk mengetahui akses masuk ke halaman member...<br> Periksa folder spam jika tidak ditemukan.</p>
-                    <a href="{{ url('/') }}" class="btn btn-outline-info">Kembali Home</a>
+                    <a href="{{ url('/layanan-corporate') }}" class="btn btn-outline-info">Kembali Ke Layanan</a>
                 </div>
             </div>
         </div>

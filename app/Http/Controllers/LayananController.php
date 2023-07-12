@@ -74,6 +74,8 @@ class LayananController extends Controller
                 <a href="javascript:void(0)" class="klinik text-dark" data-id_layanan="' . $value->id_layanan . '"><i class="fa fa-edit text-info"></i> Mapping Klinik</a><br>
             </center>';
             
+            $data_tables[$key][] = '<center>' . $value->tipe . '</center>';
+
             $aksi = '';
             $aksi .= '<center>';
             $aksi .= '&nbsp;<a href="javascript:void(0)" class="edit text-dark" data-id_layanan="' . $value->id_layanan . '"><i class="fa fa-edit text-info"></i> Edit</a>';
@@ -151,6 +153,7 @@ class LayananController extends Controller
             $destinationPathori = "img/";
         }
 
+        $data->tipe = $request->tipe;
         $data->nama_layanan = $request->nama_layanan;
         $data->slug_layanan  = Str::slug($request->nama_layanan);
         $data->keterangan   = $request->keterangan;
@@ -238,6 +241,7 @@ class LayananController extends Controller
         }
 
         $data->nama_layanan = $request->nama_layanan;
+        $data->tipe = $request->tipe;
         $data->slug_layanan  = Str::slug($request->nama_layanan);
         $data->keterangan   = $request->keterangan;
         $data->harga        = str_replace('.', '', trim($request->harga));
@@ -489,7 +493,20 @@ class LayananController extends Controller
 
     public function selectLayanan(Request $request){
         
-        $datas = M_layanan::orderBy('updated_at','DESC')->get();
+        $datas = M_layanan::orderBy('updated_at','DESC')->where('tipe','UMUM')->where('status',1)->get();
+
+        $html  = '<option value="">- PILIH JENIS TIPE -</option>';
+        
+        foreach ($datas as $value) {
+            $html .= '<option value="' . $value->id_layanan . '">' . $value->nama_layanan . '</option>';
+        }
+
+        echo $html;
+    }
+
+    public function selectLayananCorp(Request $request){
+        
+        $datas = M_layanan::orderBy('updated_at','DESC')->where('tipe','REKANAN')->where('status',1)->get();
 
         $html  = '<option value="">- PILIH JENIS TIPE -</option>';
         

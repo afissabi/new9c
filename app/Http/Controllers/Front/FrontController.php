@@ -78,7 +78,7 @@ class FrontController extends Controller
         $klinik = M_klinik::count();
         // $jabatan = M_jabatan::where('nama_jabatan', 'like', '%dokter%')->first();
         $dokter = M_pegawai::wherein('m_pegawai.jabatan',[3,4])->count();
-        $layanan = M_layanan::count();
+        $layanan = M_layanan::where('tipe','UMUM')->count();
         // $testi = Konten_section::where('id_section',6)->get();
 
         // $testimoni  = '';
@@ -364,7 +364,7 @@ class FrontController extends Controller
                 <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" style="width: 100px; height: 100px; object-fit: cover;z-index: 1;" alt="">
                 <div class="row" style="background: #0545f529;min-width: -webkit-fill-available;">
                     <div class="col-md-12 mt-3">
-                        <a href="' . url('read-artikel/misi-sosial/' . $value->slug_judul) . '" class="h6 fw-semi-bold align-items-center px-3 mb-0" style="display: block;width: 320px;">' . $value->judul . '</a>
+                        <a href="' . url('read-artikel/misi-sosial/' . $value->slug_judul) . '" class="h6 fw-semi-bold align-items-center px-3 mb-0" style="display: block;width: 250px;">' . $value->judul . '</a>
                         <div class="ml-3" style="margin-left: 16px;font-size: 12px;">
                             <small class="me-3"><i class="far fa-user text-primary me-2"></i>Admin 9C Orthodontics</small><br>
                             <small><i class="far fa-calendar-alt text-primary me-2"></i>' . \Carbon\Carbon::parse($value->updated_at)->format('d-m-Y') . '</small>
@@ -427,7 +427,7 @@ class FrontController extends Controller
                 <img class="img-fluid" src="' . asset($value->path . $value->gambar) . '" style="width: 100px; height: 100px; object-fit: cover;z-index: 1;" alt="">
                 <div class="row" style="background: #0545f529;min-width: -webkit-fill-available;">
                     <div class="col-md-12 mt-3">
-                        <a href="' . url('read-artikel/misi-sosial/' . $value->slug_judul) . '" class="h6 fw-semi-bold align-items-center px-3 mb-0" style="display: block;width: 320px;">' . $value->judul . '</a>
+                        <a href="' . url('read-artikel/misi-sosial/' . $value->slug_judul) . '" class="h6 fw-semi-bold align-items-center px-3 mb-0" style="display: block;width: 250px;">' . $value->judul . '</a>
                         <div class="ml-3" style="margin-left: 16px;font-size: 12px;">
                             <small class="me-3"><i class="far fa-user text-primary me-2"></i>Admin 9C Orthodontics</small><br>
                             <small><i class="far fa-calendar-alt text-primary me-2"></i>' . \Carbon\Carbon::parse($value->updated_at)->format('d-m-Y') . '</small>
@@ -1218,7 +1218,7 @@ class FrontController extends Controller
 
     public function Layanan()
     {
-        $layanan = M_layanan::where('status',1)->get();
+        $layanan = M_layanan::where('tipe','UMUM')->where('status',1)->get();
         $vendor = Konten_section::where('id_section',7)->get();
         
         $data = [
@@ -1240,7 +1240,8 @@ class FrontController extends Controller
         if($request->slug != 'zero-service'){
             $layanan = M_layanan::where('slug_layanan', $request->slug)->first();
             $nama_layanan = $layanan->nama_layanan;
-            $id_layanan = $layanan->id_layanan;
+            // $id_layanan = $layanan->id_layanan;
+            $id_layanan = decrypt($request->layanan);
         }
         // $promo = M_promo::where('slug_judul',$slug)->first();
         
@@ -1619,39 +1620,39 @@ class FrontController extends Controller
             $id_pasien = DB::table('m_pasien')->max('id_pasien') + 1;
 
             // NAMBAH USER UNTUK MEMBER BARU
-            // $member = new User();
-            // $id = User::max('id') + 1;
-            // $pas = $this->RandomPass();
-            // $member->name = $request->nama;
-            // $member->username = $request->email;
-            // $member->is_aktif = null;
-            // $member->password_see = $pas;
-            // $member->password = Hash::make($pas);
-            // $member->save();
+            $member = new User();
+            $id = User::max('id') + 1;
+            $pas = $this->RandomPass();
+            $member->name = $request->nama;
+            $member->username = $request->email;
+            $member->is_aktif = null;
+            $member->password_see = $pas;
+            $member->password = Hash::make($pas);
+            $member->save();
 
             // NAMBAH MODEL HAS ROLE
-            // $has = new ModelHasRoles();
-            // $has->model_id = $id;
-            // $has->model_type = 'App\Models\User';
-            // $has->role_id  = 4;
-            // $has->save();
+            $has = new ModelHasRoles();
+            $has->model_id = $id;
+            $has->model_type = 'App\Models\User';
+            $has->role_id  = 4;
+            $has->save();
 
             // NAMBAH DETAIL USER
-            // $detail = new DetailUser();
-            // $detail->user_id = $id;
-            // $detail->id_pasien = $id_pasien;
-            // $detail->telp = $request->telp;
-            // $detail->save();
+            $detail = new DetailUser();
+            $detail->user_id = $id;
+            $detail->id_pasien = $id_pasien;
+            $detail->telp = $request->telp;
+            $detail->save();
 
 
             // KIRIM EMAIL REGISTRASI PASIEN BARU
-            // $email = $request->email;
-            // $data = [
-            //     'user' => $request->email,
-            //     'kunci' => $pas,
-            // ];
+            $email = $request->email;
+            $data = [
+                'user' => $request->email,
+                'kunci' => $pas,
+            ];
         
-            // Mail::to($email)->send(new SendEmail($data));
+            Mail::to($email)->send(new SendEmail($data));
         }
 
         $pasien->nama_pasien = $request->nama;

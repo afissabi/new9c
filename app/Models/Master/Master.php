@@ -57,11 +57,19 @@ class Master extends Model
 
     public function scopedataRegister($query, Request $request)
     {
+        $user = Auth::user();
+        $detail = $user->detailUser;
+        $role = ModelHasRoles::where('model_id',$user->id)->first();
+        
+        $klinik = '';
         $tipe = '';
         $jenis = '';
         $status = '';
         $join = '';
         $na = '';
+        if($role->role_id == 7){
+            $klinik = "AND tr.id_klinik = $detail->id_klinik";
+        }
 
         if($request->tipe){
             $tipe = "AND tr.tipe = '$request->tipe'";
@@ -108,12 +116,21 @@ class Master extends Model
                 $tipe
                 $jenis
                 $status
+                $klinik
         ");
         
     }
 
     public function scopedataBayar($query, Request $request)
     {
+        $user = Auth::user();
+        $detail = $user->detailUser;
+        $role = ModelHasRoles::where('model_id',$user->id)->first();
+        
+        $klinik = '';
+        if($role->role_id == 7){
+            $klinik = "AND tr.id_klinik = $detail->id_klinik";
+        }
         $tipe = '';
         $jenis = '';
         $status = '';
@@ -180,6 +197,7 @@ class Master extends Model
                 $jenis
                 $status
                 $tanggal
+                $klinik
         ");
         
     }

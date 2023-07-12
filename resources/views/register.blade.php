@@ -56,6 +56,7 @@
                     <option value="">- PILIH TIPE -</option>
                     <option value="LAYANAN">LAYANAN</option>
                     <option value="PROMO">PROMO</option>
+                    <option value="LAYANAN CORPORATE">LAYANAN CORPORATE</option>
                 </select>
             </div>
             <div class="col-md-5 fv-row mb-2">
@@ -201,6 +202,19 @@
         if ( $(this).val() == "LAYANAN") {
             $.ajax({
                 url: "{{ url('master/layanan/select-layanan') }}",
+                type: "get",
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: {
+                    
+                },
+
+                success: function(response){
+                    $('#jenis_tipe').html(response);
+                }
+            });
+        }else if ( $(this).val() == "LAYANAN CORPORATE") {
+            $.ajax({
+                url: "{{ url('master/layanan/select-layanan-corporate') }}",
                 type: "get",
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 data: {

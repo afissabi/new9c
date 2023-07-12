@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\M_klinik;
 use App\Models\Master\Master;
+use App\Models\ModelHasRoles;
 use App\Models\T_register;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Facades\Auth;
 use Image;
 use Str;
 
@@ -34,7 +36,6 @@ class RegisterController extends Controller
     public function datatable(Request $request)
     {
         // $datas = T_register::orderBy('tanggal_daftar','DESC')->get();
-        
         $data_tables = [];
         
         if($request->filter){
