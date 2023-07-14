@@ -14,7 +14,7 @@
 
 @endsection --}}
 @section('btn-register')
-<a href="{{ url('register/zero-service') }}"><img class="img-fluid rounded btn-reg" src="{{ asset('front/img/regnew.png') }}" style="width: 120px;" ></a>
+<a href="{{ url('register/zero-service/' . encrypt(0)) }}"><img class="img-fluid rounded btn-reg" src="{{ asset('front/img/regnew.png') }}" style="width: 120px;" ></a>
 @endsection
 @section('content')
 <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">

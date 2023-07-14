@@ -58,6 +58,7 @@ class FrontController extends Controller
     {
         $slide1 = Konten_section::where('id_section',1)->first();
         $sliderother = collect(Umum::Slider());
+        
         $testi = Konten_section::where('id_section',6)->get();
         $vendor = Konten_section::where('id_section',7)->get();
 

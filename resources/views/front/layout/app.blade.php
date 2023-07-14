@@ -137,7 +137,7 @@
                     <a href="contact.html" class="nav-item nav-link">Contact</a> --}}
                 </div>
                 <butaton type="button" class="btn text-primary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></butaton>
-                <a href="{{ url('register/zero-service') }}" class="btn btn-primary py-2 px-4 ms-3" style="background: #263b73;border-radius: 25px;border: 1px solid;">Daftar Sekarang</a>
+                <a href="{{ url('register/zero-service/' . encrypt(0)) }}" class="btn btn-primary py-2 px-4 ms-3" style="background: #263b73;border-radius: 25px;border: 1px solid;">Daftar Sekarang</a>
             </div>
         </nav>
         @yield('btn-register')

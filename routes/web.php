@@ -49,6 +49,7 @@ Route::get('/layanan', [FrontController::class, 'layanan'])->name('daftar-layana
 Route::get('/promo', [FrontController::class, 'promo'])->name('promo');
 Route::get('/promo/{slug}', [FrontController::class, 'promoDetail'])->name('promo');
 Route::get('/register/promo/{slug}', [FrontController::class, 'regpromo'])->name('promo-register');
+Route::get('/register/{slug}/{layanan}', [FrontController::class, 'pendaftaran'])->name('pendaftaran');
 // Route::post('daftar-promo', [FrontController::class, 'promoDaftar'])->name('promo-daftar');
 Route::get('/thanks', [FrontController::class, 'thanks'])->name('thanks');
 Route::post('simpan-register/promo', [FrontController::class, 'promoDaftar'])->name('promo-daftar');
@@ -108,8 +109,18 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Route::middleware('auth')->group(function () {
 Route::group(['middleware' => 'admin'], function () {
-    Route::get('/home', [DashboardController::class, 'dashboard'])->name('home');
+    Route::get('/home', [DashboardController::class, 'home'])->name('home');
     Route::post('/pilih-kota', [DashboardController::class, 'pilihKota'])->name('list-klinik');
+    
+    Route::group([
+        'prefix' => 'dashboard',
+        'as' => 'dashboard.',
+    ], function () {
+        Route::get('/', [DashboardController::class, 'dashboard'])->name('home');
+        Route::post('/promo', [DashboardController::class, 'promoRekap'])->name('promo-datatable');
+        Route::post('/layanan', [DashboardController::class, 'layananRekap'])->name('layanan-datatable');
+    });
+
     /* Route untuk global global */
     Route::group([
         'prefix' => 'master',

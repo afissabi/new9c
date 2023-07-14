@@ -247,5 +247,106 @@ class Master extends Model
         
     }
 
+    public function scopepromoRekap($query, Request $request)
+    {
+        $user = Auth::user();
+        $detail = $user->detailUser;
+        $role = ModelHasRoles::where('model_id',$user->id)->first();
+        
+        $klinik = '';
+        if($role->role_id == 7){
+            $klinik = "AND tr.id_klinik = $detail->id_klinik";
+        }
+
+        $tanggal = '';
+
+        if($request->tglakhir){
+            $tanggal = "AND tanggal_daftar BETWEEN '$request->tglawal' AND '$request->tglakhir'";
+        }
+
+        return \DB::select("
+            SELECT
+                judul_promo,
+                total,
+                menunggu,
+                diterima,
+                tolak
+            FROM
+                m_promo mp
+                LEFT JOIN (
+                    SELECT
+                        id_promo,
+                        COUNT( tr.id_t_register ) AS total,
+                        COUNT( CASE WHEN status = 0 THEN 1 END ) AS menunggu,
+                        COUNT( CASE WHEN status = 1 THEN 1 END ) AS diterima,
+                        COUNT( CASE WHEN status = 2 THEN 1 END ) AS tolak
+                    FROM
+                        t_register tr 
+                    WHERE
+                        deleted_at IS NULL 
+                        AND id_promo IS NOT NULL
+                        $tanggal
+                    GROUP BY id_promo
+                )tr ON tr.id_promo = mp.id_m_promo
+            WHERE
+                mp.deleted_at IS NULL 
+                AND mp.status = 1
+            ORDER BY
+                judul_promo
+        ");
+        
+    }
+
+    public function scopelayananRekap($query, Request $request)
+    {
+        $user = Auth::user();
+        $detail = $user->detailUser;
+        $role = ModelHasRoles::where('model_id',$user->id)->first();
+        
+        $klinik = '';
+        if($role->role_id == 7){
+            $klinik = "AND tr.id_klinik = $detail->id_klinik";
+        }
+
+        $tanggal = '';
+
+        if($request->tglakhir){
+            $tanggal = "AND tanggal_daftar BETWEEN '$request->tglawal' AND '$request->tglakhir'";
+        }
+
+        return \DB::select("
+            SELECT
+                nama_layanan,
+                total,
+                menunggu,
+                diterima,
+                tolak
+            FROM
+                m_layanan mp
+                LEFT JOIN (
+                    SELECT
+                        id_layanan,
+                        COUNT( tr.id_t_register ) AS total,
+                        COUNT( CASE WHEN status = 0 THEN 1 END ) AS menunggu,
+                        COUNT( CASE WHEN status = 1 THEN 1 END ) AS diterima,
+                        COUNT( CASE WHEN status = 2 THEN 1 END ) AS tolak
+                    FROM
+                        t_register tr 
+                    WHERE
+                        deleted_at IS NULL 
+                        AND id_layanan IS NOT NULL
+                        $tanggal
+                    GROUP BY id_layanan
+                )tr ON tr.id_layanan = mp.id_layanan
+            WHERE
+                mp.deleted_at IS NULL 
+                AND mp.status = 1
+                AND tipe = 'UMUM'
+            ORDER BY
+                nama_layanan
+        ");
+        
+    }
+
 
 }
