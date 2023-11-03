@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Facades\Auth;
 use Image;
 use Str;
 
@@ -33,12 +34,21 @@ class KlinikController extends Controller
     {
         $prov = M_provinsi::orderBy('nm_prop')->get();
         $kota = M_kota::join('m_setup_prop', 'm_setup_prop.id_m_setup_prop', '=', 'm_setup_kab.id_m_setup_prop')->get();
-        $datas = M_klinik::all();
+        $user = Auth::user();
+        
+        $role = DB::table('model_has_roles')->where('model_id', $user->id)->first();
+        if($role->role_id == 7){
+            $datas = M_klinik::where('id_klinik',$user->detailUser->id_klinik)->get();
+        }else{
+            $datas = M_klinik::all();
+        }
+        
 
         $data = [
             'prov' => $prov,
             'kota' => $kota,
             'datas' => $datas,
+            'role'  => $role->role_id,
         ];
 
         return view('klinik', $data);
@@ -195,10 +205,18 @@ class KlinikController extends Controller
 
         $html  = '';
         foreach ($jam as $value) {
-            $html .= '
+            if($value->status == 'ISTIRAHAT'){
+                $html .= '
+                <div class="col-lg-4">
+                    <span class="badge badge-danger">' . $value->hari . ' - ' . $value->status . ' ( ' . substr($value->jam_buka,0,5) . ' - ' . substr($value->jam_tutup,0,5) . ') &nbsp;&nbsp;&nbsp; <a href="#!" onClick="hapusjam(' . $value->id_jam_operasi . ')"><i class="fa fa-trash"></i></a></span>
+                </div>';
+            }else{
+                $html .= '
             <div class="col-lg-4">
                 <span class="badge badge-info">' . $value->hari . ' - ' . $value->status . ' ( ' . substr($value->jam_buka,0,5) . ' - ' . substr($value->jam_tutup,0,5) . ') &nbsp;&nbsp;&nbsp; <a href="#!" onClick="hapusjam(' . $value->id_jam_operasi . ')"><i class="fa fa-trash"></i></a></span>
             </div>';
+            }
+            
         }
 
         $data = [

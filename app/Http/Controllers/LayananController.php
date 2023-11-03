@@ -7,6 +7,8 @@ use App\Models\M_klinik;
 use App\Models\Master\Dokter_layanan;
 use App\Models\Master\M_jabatan;
 use App\Models\Master\M_layanan;
+use App\Models\Master\DentalUnit;
+use App\Models\Master\M_estimasi;
 use App\Models\Master\M_pegawai;
 use App\Models\Master\Mapping_layanan;
 use App\Models\Master\MetodeBayar;
@@ -73,8 +75,27 @@ class LayananController extends Controller
             $data_tables[$key][] = '<center>
                 <a href="javascript:void(0)" class="klinik text-dark" data-id_layanan="' . $value->id_layanan . '"><i class="fa fa-edit text-info"></i> Mapping Klinik</a><br>
             </center>';
-            
             $data_tables[$key][] = '<center>' . $value->tipe . '</center>';
+            
+            $waktu = '';
+            $waktu .= '<table class="table table-striped gy-5 gs-7 border rounded">
+                    <thead style="border: 1px solid;text-align: center;background: #ddd;">
+                        <tr>
+                            <td>Klinik</td>
+                            <td>Estimasi Waktu (menit)</td>
+                            <td>Jumlah DU</td>
+                            <td>Hapus</td>
+                        </tr>
+                    </thead>
+                    <tbody style="border: 1px solid;text-align: center;">';
+            $waktu .= $this->EstimasiWaktu($value->id_layanan);
+            $waktu .= '</tbody></table><br>
+            <center>
+                <a href="javascript:void(0)" class="waktu text-dark" data-id_layanan="' . $value->id_layanan . '"><i class="fa fa-edit text-info"></i> Mapping DU & Waktu</a><br>
+            </center>';
+
+            $data_tables[$key][] = $waktu;
+            // $data_tables[$key][] = '<center>' . $value->estimasi_waktu . '</center>';
 
             $aksi = '';
             $aksi .= '<center>';
@@ -130,6 +151,34 @@ class LayananController extends Controller
         return $tr;
     }
 
+    private function EstimasiWaktu($id_layanan){
+        $cek = M_estimasi::where('id_layanan',$id_layanan)->get();
+
+        $tr = '';
+        foreach($cek as $value){
+            $tr .= '<tr>
+                <td>'. $value->klinik->nama .'</td>
+                <td>'. $value->estimasi_waktu .'</td>
+                <td>'. $value->jumlah_du .'</td>
+                <td><a href="#!" onClick="hapusWaktu(' . $value->id_estimasi . ')"><i class="fa fa-trash text-danger"></i></a></td>
+            </tr>';
+        }
+
+        return $tr;
+    }
+
+    private function JumlahDu($id_layanan){
+        $cek = DentalUnit::where('id_layanan',$id_layanan)->first();
+
+        $jumlah = 0;
+        
+        if($cek){
+            $jumlah = $cek->jumlah_du;
+        }
+
+        return $jumlah;
+    }
+
     public function store(Request $request)
     {
         $data = new M_layanan();
@@ -161,6 +210,7 @@ class LayananController extends Controller
         $data->status       = 1;
         $data->icon         = $imageName;
         $data->path         = $destinationPathori;
+        $data->estimasi_waktu = $request->estimasi_waktu;
 
         $bank = New BankPencarian();
         $bank->slug = Str::slug($request->nama_layanan);
@@ -242,12 +292,13 @@ class LayananController extends Controller
 
         $data->nama_layanan = $request->nama_layanan;
         $data->tipe = $request->tipe;
-        $data->slug_layanan  = Str::slug($request->nama_layanan);
+        $data->slug_layanan = Str::slug($request->nama_layanan);
         $data->keterangan   = $request->keterangan;
         $data->harga        = str_replace('.', '', trim($request->harga));
         $data->status       = 1;
         $data->icon         = $imageName;
         $data->path         = $destinationPathori;
+        $data->estimasi_waktu = $request->estimasi_waktu;
 
         try {
             $data->save();
@@ -293,7 +344,7 @@ class LayananController extends Controller
 
         $datas = M_klinik::all();
         $html  = '';
-        
+        $klinik = '';
         foreach ($datas as $value) {
             $cek = $this->cekKlinik($value->id_klinik, $request->layanan);
             if($cek){
@@ -309,9 +360,18 @@ class LayananController extends Controller
             }
         }
 
+        $pilih = Mapping_layanan::where('id_layanan',$request->layanan)->get();
+
+        $klinik .= '<select class="form-control" name="klinik">';
+        foreach ($pilih as $value) {
+            $klinik .= '<option value="' . $value->id_klinik . '">' . $value->klinik->nama . '</option>';
+        }
+        $klinik .='</select>';
+
         $data = [
             'id_layanan' => $layanan->id_layanan,
             'html'  => $html,
+            'klinik' => $klinik,
         ];
         return response()->json($data);
     }
@@ -548,6 +608,54 @@ class LayananController extends Controller
                 'status' => false,
                 'pesan'  => 'Maaf, Data Gagal Tersimpan!',
                 'err'    => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function tambahestimasiWaktu(Request $request)
+    {
+        $data = new M_estimasi();
+
+        $data->id_layanan = $request->id_layanan;
+        $data->id_klinik = $request->klinik;
+        $data->estimasi_waktu = $request->estimasi_waktu;
+        $data->jumlah_du = $request->jumlah_du;
+
+        try {
+            $data->save();
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'pesan'  => 'Data Berhasil Disimpan!',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'pesan'  => 'Maaf, Data Gagal Tersimpan!',
+                'err'    => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function destroyEstimasi(Request $request)
+    {
+
+        $data = M_estimasi::findOrFail($request->id);
+
+        if ($data->delete()) {
+
+            return response()->json([
+                'status' => true,
+                'pesan'  => 'Data Terhapus!',
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'pesan'  => 'Maaf, Data Gagal Terhapus!',
             ]);
         }
     }

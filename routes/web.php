@@ -70,7 +70,7 @@ Route::get('/email-register', [FrontController::class, 'sendRegister'])->name('k
 // AJAX FRONT
 Route::get('/summary-group', [FrontController::class, 'summaryTotal'])->name('group-summary');
 Route::get('/get-blog', [FrontController::class, 'getBlog'])->name('get-blog');
-Route::get('/get-blog', [FrontController::class, 'getBlog'])->name('get-blog');
+// Route::get('/get-blog', [FrontController::class, 'getBlog'])->name('get-blog');
 
 // PENDAFTARAN PROMO
 Route::get('/get-promo', [FrontController::class, 'getPromo'])->name('get-promo');
@@ -111,7 +111,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::group(['middleware' => 'admin'], function () {
     Route::get('/home', [DashboardController::class, 'home'])->name('home');
     Route::post('/pilih-kota', [DashboardController::class, 'pilihKota'])->name('list-klinik');
-    
+
     Route::group([
         'prefix' => 'dashboard',
         'as' => 'dashboard.',
@@ -227,6 +227,9 @@ Route::group(['middleware' => 'admin'], function () {
             Route::post('/metode-bayar', [LayananController::class, 'metodeBayar'])->name('klinik');
             Route::post('/tambah-metode-bayar', [LayananController::class, 'tambahmetodeBayar'])->name('klinik');
             Route::post('/destroyMetode', [LayananController::class, 'destroyMetode'])->name('destroy-metode');
+
+            Route::post('/tambah-estimasi-waktu', [LayananController::class, 'tambahestimasiWaktu'])->name('waktu');
+            Route::post('/destroyEstimasi', [LayananController::class, 'destroyEstimasi'])->name('destroy-estimasi');
         });
 
         Route::group([
@@ -248,11 +251,14 @@ Route::group(['middleware' => 'admin'], function () {
     ], function () {
         Route::get('/', [RegisterController::class, 'index'])->name('index');
         Route::post('/datatable', [RegisterController::class, 'datatable'])->name('store');
+        Route::post('/datatable/today', [RegisterController::class, 'datatableToday'])->name('today');
         Route::post('/terima', [RegisterController::class, 'Terima'])->name('approve');
         Route::post('/tolak', [RegisterController::class, 'Tolak'])->name('cancel');
         Route::post('/hapus', [RegisterController::class, 'Hapus'])->name('destroy');
         Route::post('/reschedule', [RegisterController::class, 'Reschedule'])->name('rejadwal');
         Route::post('/simpan-reschedule', [RegisterController::class, 'SimpanReschedule'])->name('save-rejadwal');
+
+        Route::get('/live-view', [RegisterController::class, 'LiveView'])->name('live-view');
     });
 
     Route::group([
@@ -383,10 +389,35 @@ Route::group([
 
 Route::group(['middleware' => 'member'], function () {
     Route::get('/home-member', [MemberController::class, 'dashboard'])->name('home-member');
-    Route::get('/last-register', [MemberController::class, 'lastRegis'])->name('last-register');
-    Route::get('/last-pay', [MemberController::class, 'lastPay'])->name('last-pembayaran');
-    Route::get('/bayar', [MemberController::class, 'Bayar'])->name('last-bayar');
-    Route::post('/konfirmasi-pembayaran', [MemberController::class, 'konfirBayar'])->name('konfirmasi-bayar');
+    
+
+    Route::group([
+        'prefix' => 'member-area',
+        'as' => 'member-area.',
+    ], function () {
+        Route::get('layanan', [MemberController::class, 'Layanan'])->name('layanan-corporate');
+        Route::get('last-register', [MemberController::class, 'lastRegis'])->name('last-register');
+        Route::get('last-pay', [MemberController::class, 'lastPay'])->name('last-pembayaran');
+        Route::get('bayar', [MemberController::class, 'Bayar'])->name('last-bayar');
+        Route::post('konfirmasi-pembayaran', [MemberController::class, 'konfirBayar'])->name('konfirmasi-bayar');
+
+        Route::get('riwayat-pendaftaran', [MemberController::class, 'RiwayatDaftar'])->name('history-daftar');
+        Route::get('riwayat-pembayaran', [MemberController::class, 'RiwayatBayar'])->name('history-bayar');
+
+        Route::post('all-daftar', [MemberController::class, 'AllDaftar'])->name('all-daftar');
+        Route::post('all-bayar', [MemberController::class, 'AllBayar'])->name('all-bayar');
+
+        Route::get('/register/{slug}/{layanan}', [MemberController::class, 'pendaftaran'])->name('pendaftaran');
+        Route::get('/get-reg-klinik', [MemberController::class, 'klinikLayanan'])->name('klinik-layanan');
+        Route::get('/get-reg-layanan', [MemberController::class, 'listLayanan'])->name('klinik-layanan');
+        Route::get('/get-reg-tanggal', [MemberController::class, 'tanggalLayanan'])->name('tanggal-layanan');
+        Route::get('/get-reg-jam', [MemberController::class, 'jamLayanan'])->name('jam-layanan');
+        Route::get('/get-layanan-register', [MemberController::class, 'formLayanan'])->name('register-layanan');
+        Route::get('/get-metode-bayar-layanan', [MemberController::class, 'getMetodeBayarLayanan'])->name('metode-bayar-layanan');
+        Route::post('simpan-register/layanan', [MemberController::class, 'layananDaftar'])->name('layanan-daftar');
+        Route::get('/thanks', [MemberController::class, 'thanks'])->name('thanks');
+    });
+    
 });
 
 

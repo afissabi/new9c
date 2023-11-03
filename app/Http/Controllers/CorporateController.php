@@ -403,6 +403,23 @@ class CorporateController extends Controller
             $start_time += $add_mins;
         }
         
+        $break = M_operasional::where('id_klinik',$request->klinik)->where('hari',$request->hari)->where('status','ISTIRAHAT')->first();
+        $startbreak = $break->jam_buka;
+        $endbreak = $break->jam_tutup;
+        // $duration = $promo->waktu_layanan;
+
+        $array_of_break = array ();
+        $start_break    = strtotime ($startbreak);
+        $nyarbreak	   = date("H:i", strtotime('-30 minutes', strtotime($endbreak)));
+        $end_break      = strtotime($nyarbreak);
+        $add_mins_break  = 30 * 60;
+
+        while ($start_break <= $end_break)
+        {
+            $array_of_break[] = date ("H:i", $start_break);
+            $start_break += $add_mins_break;
+        }
+        
         foreach($array_of_time as $value){
             $start_time    = strtotime($value);
             $add_mins  = 30 * 60;
@@ -413,6 +430,11 @@ class CorporateController extends Controller
             $penuh = $this->PenuhLayanan($request->layanan, $request->klinik, $request->tanggal, $value);
             if($penuh == 'penuh'){
                 $bg = 'bg-red-turquoise';
+                $is_disabled = true;
+                $a = '';
+                $i = '<i class="fas fa-times-circle" style="margin-top: 0px !important;"></i>';
+            }else if(in_array($value, $array_of_break)){
+                $bg = 'bg-yellow-turquoise';
                 $is_disabled = true;
                 $a = '';
                 $i = '<i class="fas fa-times-circle" style="margin-top: 0px !important;"></i>';

@@ -206,5 +206,53 @@ class RegisterController extends Controller
         }
     }
 
+    public function CalenderView()
+    {
+        $klinik = M_klinik::all();
 
+        $data = [
+            'klinik' => $klinik,
+        ];
+
+        return view('calenderview',$data);
+    }
+
+    public function LiveView(Request $request)
+    {
+        $data = T_register::where('id_t_register',$request->id_register)->first();
+
+        $data = [
+            'klinik' => $data,
+        ];
+
+        return view('liveview',$data);
+    }
+
+
+    public function datatableToday(Request $request)
+    {
+        $data_tables = [];
+
+        $today = date('Y-m-d');
+        $datas = T_register::where('tanggal',$today)->get();
+        
+        foreach ($datas as $key => $value) {
+            $data_tables[$key][] = $key + 1;
+            $data_tables[$key][] = '<b>' . $value->pasien->nama_pasien .'</b>';
+            if($value->tipe == 'PROMO'){
+                $data_tables[$key][] = '<center>' . $value->promo->judul_promo . '</center>';
+            }else if($value->tipe == 'LAYANAN'){
+                $data_tables[$key][] = '<center>' . $value->layan->nama_layanan . '</center>';
+            }
+            
+            $data_tables[$key][] = '<center><b>' . substr($value->jam,0,5) . 'WIB </b></center>';
+        }
+
+
+        $data = [
+            "data" => $data_tables
+        ];
+
+        return response()->json($data);
+    }
 }

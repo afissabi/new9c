@@ -94,6 +94,7 @@
                     <th><center>Metode Bayar</center></th>
                     <th><center>Mapping</center></th>
                     <th><center>Tipe</center></th>
+                    <th><center>Estimasi Waktu (Menit)</center></th>
                     <th width="15%"><center>Detail</center></th>
                 </tr>
             </thead>
@@ -161,6 +162,12 @@
                         <label class="col-lg-3 col-form-label text-lg-end required">Keterangan :</label>
                         <div class="col-lg-9">
                             <textarea class="form-control form-control-solid" rows="3" name="keterangan" placeholder="Keterangan"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-10">
+                        <label class="col-lg-3 col-form-label text-lg-end required">Estimasi Waktu :</label>
+                        <div class="col-lg-6">
+                            <input type="number" class="form-control price" name="estimasi_waktu" placeholder="Estimasi Waktu (dalam menit)">
                         </div>
                     </div>
                     <div class="row mb-10">
@@ -238,6 +245,12 @@
                         <label class="col-lg-3 col-form-label text-lg-end required">Keterangan :</label>
                         <div class="col-lg-9">
                             <textarea class="form-control form-control-solid" rows="3" name="keterangan" id="keterangan" placeholder="Keterangan"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-10">
+                        <label class="col-lg-3 col-form-label text-lg-end required">Estimasi Waktu :</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" name="estimasi_waktu" id="estimasi_waktu" placeholder="Estimasi Waktu (dalam menit)">
                         </div>
                     </div>
                     <div class="row mb-10">
@@ -367,6 +380,49 @@
                     <br><br>
                     <h3 style="color: #ffffff;background: cadetblue;">Proses menyimpan data...</h3>
                 </center>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- MODAL MAPPING ESTIMASI WAKTU DAN DENTAL UNIT--}}
+<div class="modal fade" tabindex="-1" id="kt_waktu" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-750px">
+        <div class="modal-content" style="width: 125%;">
+            <div class="modal-header" style="background: #f1faff;">
+                <h5 class="modal-title">Mapping Waktu dan Dental Unit</h5>
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-2x"></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="kt-form kt-form--label-right" id="formwaktu">
+                    <input type="hidden" class="form-control" id="id_layanan_waktu" name="id_layanan">
+                    <div class="row mb-10">
+                        <label class="col-lg-4 col-form-label text-lg-end required">Pilih Klinik :</label>
+                        <div class="col-lg-6" id="kliniknya">
+                            
+                        </div>
+                    </div>
+                    <div class="row mb-10">
+                        <label class="col-lg-4 col-form-label text-lg-end required">Estimasi Waktu (Menit) :</label>
+                        <div class="col-lg-6">
+                            <input type="number" class="form-control price" name="estimasi_waktu" placeholder="Estimasi Waktu">
+                        </div>
+                    </div>
+                    <div class="row mb-10">
+                        <label class="col-lg-4 col-form-label text-lg-end required">Jumlah DU tersedia :</label>
+                        <div class="col-lg-6">
+                            <input type="number" class="form-control price" name="jumlah_du" placeholder="Jumlah Dental Unit">
+                        </div>
+                    </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal"><i class="fas fa-times-circle"></i> Close</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
+                </form>
             </div>
         </div>
     </div>
@@ -539,6 +595,7 @@
                     $('#nama_layanan').val(msg.edit.nama_layanan);
                     $('#keterangan').val(msg.edit.keterangan);
                     $('#harga').val(msg.harga);
+                    $('#estimasi_waktu').val(msg.estimasi_waktu);
                     $('#tipe').val(msg.edit.tipe).trigger("change");
 
                 }
@@ -732,6 +789,29 @@
                 }
                 // Display Modal
                 $('#kt_metode').modal('show');
+            }
+        });
+    });
+
+    // VIEW MAPPING WAKTU
+    $('#table').on('click', '.waktu', function (e) {
+        var layanan = $(this).data('id_layanan');
+
+        $.ajax({
+            url: "{{ url('master/layanan/klinik') }}",
+            type: "post",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: {
+                layanan: layanan,
+            },
+            success: function(response){
+                // Add response in Modal body
+                if(response){
+                    $('#kliniknya').html(response.klinik);
+                    $('#id_layanan_waktu').val(response.id_layanan);
+                }
+                // Display Modal
+                $('#kt_waktu').modal('show');
             }
         });
     });
@@ -1096,6 +1176,127 @@
                 }
             });
         }
+    }
+
+
+    // POST MAPPING WAKTU DAN DENTAL UNIT
+    $(function () {
+        $("#formwaktu").submit(function(e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+
+            swal.fire({
+                title: "Apa Anda Yakin?",
+                text: "Menambahkan Mapping Tersebut ?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Ya, Yakin!",
+                closeOnConfirm: false,
+                allowOutsideClick: false,
+            }).then(function(result) {
+                $('#loading').modal({backdrop:'static', keyboard:false});
+                $('#loading').modal('show');
+                if (result.value) {
+                    $.ajax({
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        type:'POST',
+                        url: "{{ url('master/layanan/tambah-estimasi-waktu') }}",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                    })
+                    .done(function(hasil) {
+                        var tittle = "";
+                        var icon = "";
+                        $('#loading').modal('hide');
+
+                        if (hasil.status == true) {
+                            title = "Berhasil!";
+                            icon = "success";
+
+                            swal.fire({
+                                title: title,
+                                text: hasil.pesan,
+                                icon: icon,
+                                button: "OK!",
+                                allowOutsideClick: false,
+                            }).then(function() {
+                                $('#loading').modal('hide');
+                                $('#kt_waktu').modal('hide');
+                                load_data_table();
+                            });
+                        } else {
+                            title = "Gagal!";
+                            icon = "error";
+
+                            swal.fire({
+                                title: title,
+                                text: hasil.pesan,
+                                icon: icon,
+                                button: "OK!",
+                            })
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        errorNotification();
+                    });
+                }
+            });
+        });
+    })
+
+    // HAPUS WAKTU
+    function hapusWaktu(id_estimasi) {
+        swal.fire({
+            title: "Apa Anda Yakin?",
+            text: "Menghapus Mapping Tersebut",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, Hapus!",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        }).then(function(result) {
+            if (result.value) {
+                $.ajax({
+                    type: "post",
+                    url: "{{ url('master/layanan/destroyEstimasi') }}",
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: "json",
+                    data: {
+                        id : id_estimasi
+                    }
+                })
+                .done(function(hasil) {
+                    var tittle = "";
+                    var icon = "";
+
+                    if (hasil.status == true) {
+                        title = "Berhasil!";
+                        icon = "success";
+
+                        swal.fire({
+                            title: title,
+                            text: hasil.pesan,
+                            icon: icon,
+                            button: "OK!",
+                        }).then(function(result) {
+                            load_data_table();
+                        })
+                    } else {
+                        title = "Gagal!";
+                        icon = "error";
+
+                        swal.fire({
+                            title: title,
+                            text: hasil.pesan,
+                            icon: icon,
+                            button: "OK!",
+                        })
+                    }
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    errorNotification();
+                });
+            }
+        });
     }
 </script>
 @endsection

@@ -52,7 +52,6 @@ class LoginController extends Controller
             // }
 
             $this->checkRegistered($request->username);
-            
             $credentials = $request->only('username', 'password');
             
             if (Auth::attempt($credentials)) {
@@ -111,7 +110,7 @@ class LoginController extends Controller
 
     private function checkRegistered($username){
         $data = User::join('model_has_roles as mhr','mhr.model_id','users.id')->select('name')->where(['username' => $username,'is_aktif' => null])->where('role_id','!=', 4)->first();
-
+        
         if(!$data){
             throw new Exception('Username / Email belum terdaftar', 999);
         }

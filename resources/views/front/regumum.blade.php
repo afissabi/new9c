@@ -66,6 +66,14 @@
         border-radius: 6px;
     }
 
+    .bg-yellow-turquoise {
+        border-color: #ffe425 !important;
+        background-image: none !important;
+        background-color: #ffc107 !important;
+        color: white !important;
+        border-radius: 6px;
+    }
+
     .tile:after, .tiles .tile:before {
         content: "";
         float: left;

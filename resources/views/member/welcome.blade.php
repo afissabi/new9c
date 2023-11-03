@@ -78,7 +78,7 @@
                             
                         </div>
                         <div class="card-footer" style="padding: 0px;">
-                            <a href="" class="btn btn-block btn-info" style="width: -webkit-fill-available;margin: 0px;border-radius: 0px;"><i class="fas fa-eye"></i> Detail Riwayat Pendaftaran</a>
+                            <a href="{{ url('member-area/riwayat-pendaftaran') }}" class="btn btn-block btn-info" style="width: -webkit-fill-available;margin: 0px;border-radius: 0px;"><i class="fas fa-eye"></i> Detail Riwayat Pendaftaran</a>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                         </div>
 
                         <div class="card-footer" style="padding: 0px;">
-                            <a href="" class="btn btn-block btn-info" style="width: -webkit-fill-available;margin: 0px;border-radius: 0px;"><i class="fas fa-eye"></i> Detail Pembayaran</a>
+                            <a href="{{ url('member-area/riwayat-pembayaran') }}" class="btn btn-block btn-info" style="width: -webkit-fill-available;margin: 0px;border-radius: 0px;"><i class="fas fa-eye"></i> Detail Pembayaran</a>
                         </div>
                     </div>
                 </div>
@@ -309,7 +309,7 @@
         var need = 3;
 
         $.ajax({
-            url: "{{ url('/last-register') }}",
+            url: "{{ url('member-area/last-register') }}",
             type: "get",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: {
@@ -324,7 +324,7 @@
 
     function LastPay() {
         $.ajax({
-            url: "{{ url('/last-pay') }}",
+            url: "{{ url('member-area/last-pay') }}",
             type: "get",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: {
@@ -342,7 +342,7 @@
         var id = $(this).data('id_pembayaran');
 
         $.ajax({
-            url: "{{ url('bayar') }}",
+            url: "{{ url('member-area/bayar') }}",
             type: "get",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: {
@@ -366,7 +366,7 @@
         var id = $(this).data('id_pembayaran');
 
         $.ajax({
-            url: "{{ url('bayar') }}",
+            url: "{{ url('member-area/bayar') }}",
             type: "get",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: {
@@ -390,7 +390,7 @@
         var id = $(this).data('id_pembayaran');
 
         $.ajax({
-            url: "{{ url('bayar') }}",
+            url: "{{ url('member-area/bayar') }}",
             type: "get",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: {
@@ -414,7 +414,7 @@
         var id = $(this).data('id_pembayaran');
 
         $.ajax({
-            url: "{{ url('bayar') }}",
+            url: "{{ url('member-area/bayar') }}",
             type: "get",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: {
@@ -455,7 +455,7 @@
                     $.ajax({
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         type:'POST',
-                        url: "{{ url('konfirmasi-pembayaran') }}",
+                        url: "{{ url('konfirmasi-pembayaran/konfirmasi-pembayaran') }}",
                         data: formData,
                         contentType: false,
                         processData: false,

@@ -25,12 +25,14 @@
 <div class="card card-flush shadow-sm">
     <div class="card-body py-5">
         <div class="row" id="listing">
-            <div class="col-md-4">
-                <button type="button" class="btn btn-outline btn-outline-dashed btn-outline-info btn-active-light-info btn-tambah" data-bs-toggle="modal" data-bs-target="#kt_modal_1" style="height:385px;">
-                    <i class="fas fa-plus" style="color: #7239eb;"></i><br>
-                    Klinik
-                </button>
-            </div>
+            @if($role != 7)
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-outline btn-outline-dashed btn-outline-info btn-active-light-info btn-tambah" data-bs-toggle="modal" data-bs-target="#kt_modal_1" style="height:385px;">
+                        <i class="fas fa-plus" style="color: #7239eb;"></i><br>
+                        Klinik
+                    </button>
+                </div>    
+            @endif
             @foreach ($datas as $value)
                 <div class="col-md-4">
                     <div class="card card-xl-stretch mb-xl-8" style="min-height:385px;">
@@ -370,12 +372,13 @@
                                 <option value=""> - Pilih Status Operasional - </option>
                                 <option value="BUKA">BUKA</option>
                                 <option value="TUTUP">TUTUP</option>
+                                <option value="ISTIRAHAT">ISTIRAHAT</option>
                                 <option value="APPOINTMENT">APPOINTMENT</option>
                             </select>
                         </div>
                     </div>
                     <div class="row mb-10" id="pilihjam" style="display:none">
-                        <label class="col-lg-2 col-form-label text-lg-end required">Jam Buka - Tutup :</label>
+                        <label class="col-lg-2 col-form-label text-lg-end required">Jam :</label>
                         <div class="col-lg-4">
                             <input type="time" class="form-control" name="jam_buka" placeholder="Jam Buka">
                         </div>
@@ -523,6 +526,8 @@
 <script>
 $("#status_operasi").change(function() {
     if ( $(this).val() == "BUKA") {
+        $("#pilihjam").show();
+    }else if ( $(this).val() == "ISTIRAHAT") {
         $("#pilihjam").show();
     }else{
         $("#pilihjam").hide();

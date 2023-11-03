@@ -202,6 +202,34 @@ class Master extends Model
         
     }
 
+    public function scopedataBayarPasien($query, Request $request, $pasien)
+    {
+        return \DB::select("
+            SELECT
+                mp.id_pembayaran,
+                tr.tipe,
+                pr.judul_promo,
+                ml.nama_layanan,
+                mp.status,
+                mp.is_dp,
+                mp.cicilan_ke,
+                mp.tgl_bayar,
+                mp.keterangan,
+                mp.bukti,
+                mp.nilai
+            FROM
+                m_pembayaran mp
+                JOIN t_register tr ON tr.id_t_register = mp.id_t_register
+                LEFT JOIN m_promo pr ON pr.id_m_promo = tr.id_promo
+                LEFT JOIN m_layanan ml ON ml.id_layanan = tr.id_layanan
+            WHERE
+                mp.deleted_at IS NULL
+                AND tr.deleted_at IS NULL
+                AND mp.id_pasien = $pasien
+        ");
+        
+    }
+
     public function scopeBayar($query, $pasien)
     {
         return \DB::select("
@@ -344,6 +372,72 @@ class Master extends Model
                 AND tipe = 'UMUM'
             ORDER BY
                 nama_layanan
+        ");
+        
+    }
+
+    public function scopetodayRegister($query, Request $request)
+    {
+        $user = Auth::user();
+        $detail = $user->detailUser;
+        $role = ModelHasRoles::where('model_id',$user->id)->first();
+        
+        $klinik = '';
+        $tipe = '';
+        $jenis = '';
+        $status = '';
+        $join = '';
+        $na = '';
+        if($role->role_id == 7){
+            $klinik = "AND tr.id_klinik = $detail->id_klinik";
+        }
+
+        if($request->tipe){
+            $tipe = "AND tr.tipe = '$request->tipe'";
+            if($request->tipe == 'PROMO'){
+                $na = "mp.judul_promo,";
+                $join = "JOIN m_promo mp ON mp.id_m_promo = tr.id_promo";
+            }else{
+                $na = "ml.nama_layanan,";
+                $join = "JOIN m_layanan ml ON ml.id_layanan = tr.id_layanan";
+            }
+        }
+
+        if($request->jenis){
+            if($request->tipe == 'PROMO'){
+                $jenis = "AND tr.id_promo = $request->jenis";
+            }else{
+                $jenis = "AND tr.id_layanan = $request->jenis";
+            }
+            
+        }
+
+        if($request->status){
+            $status = "AND tr.status = '$request->status'";
+        }
+
+        return \DB::select("
+            SELECT
+                tr.*,
+                mk.nama as nama_klinik,
+                $na
+                nama_pasien,
+                ps.telp as telp_pasien,
+                ps.email as email_pasien,
+                mb.jenis_pembayaran,
+                mb.tenor
+            FROM
+                t_register tr
+                JOIN m_pasien ps ON ps.id_pasien = tr.id_pasien
+                JOIN m_klinik mk ON mk.id_klinik = tr.id_klinik
+                LEFT JOIN metode_bayar mb ON mb.id_metode_pembayaran = tr.id_metode
+                $join
+            WHERE
+                tr.deleted_at IS NULL 
+                $tipe
+                $jenis
+                $status
+                $klinik
         ");
         
     }

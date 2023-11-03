@@ -9,6 +9,7 @@ use App\Mail\SendEmail;
 use App\Models\BankPencarian;
 use App\Models\DetailUser;
 use App\Models\GaleriKlinik;
+use App\Models\Master\M_estimasi;
 use App\Models\M_klinik;
 use App\Models\M_operasional;
 use App\Models\M_pembayaran;
@@ -133,6 +134,7 @@ class FrontController extends Controller
                         <a class="" href="' . url('read-artikel/blog/' . $value->slug_judul) . '">Read More <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
+            </div>
             </div>';
         }
 
@@ -162,7 +164,7 @@ class FrontController extends Controller
     public function allPromo(Request $request)
     {
         $blog  = '';
-        $promo = M_promo::where('status',1)->orderBy('tgl_awal')->get();
+        $promo = M_promo::where('status',1)->orderByDesc('updated_at')->get();
 
         foreach ($promo as $value) {
             $blog .= '
@@ -261,6 +263,7 @@ class FrontController extends Controller
                         <a class="text-uppercase" href="' . url('read-artikel/blog/' . $value->slug_judul . '/' . $value->id_artikel) . '">Read More <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
+            </div>
             </div>';
         }
 
@@ -1405,42 +1408,139 @@ class FrontController extends Controller
 
     public function jamLayanan(Request $request)
     {
+        // JAM OPERASIONAL
         $klinik = M_operasional::where('id_klinik',$request->klinik)->where('hari',$request->hari)->first();
         $layan = M_layanan::where('id_layanan',$request->layanan)->first();
+        $estimate = M_estimasi::where('id_layanan',$request->layanan)->where('id_klinik', $request->klinik)->first();
+
         $html = '';
         $starttime = $klinik->jam_buka;
         $endtime = $klinik->jam_tutup;
         // $duration = $promo->waktu_layanan;
 
-        $array_of_time = array ();
-        $start_time    = strtotime ($starttime);
-        $nyartime	   = date("H:i", strtotime('-30 minutes', strtotime($endtime)));
-        $end_time      = strtotime($nyartime);
-        $add_mins  = 30 * 60;
+        
+        if($estimate){
+            $array_of_time = array ();
+            $start_time    = strtotime ($starttime);
+            $nyartime	   = date("H:i", strtotime('-'.$estimate->estimasi_waktu.' minutes', strtotime($endtime)));
+            $end_time      = strtotime($nyartime);
+            $add_mins  = $estimate->estimasi_waktu * 60;
+        }else{
+            $array_of_time = array ();
+            $start_time    = strtotime ($starttime);
+            $nyartime	   = date("H:i", strtotime('-30 minutes', strtotime($endtime)));
+            $end_time      = strtotime($nyartime);
+            $add_mins  = 30 * 60;
+        }
+        
 
         while ($start_time <= $end_time)
         {
             $array_of_time[] = date ("H:i", $start_time);
             $start_time += $add_mins;
         }
-        
+
+        $breaks = M_operasional::where('id_klinik',$request->klinik)->where('hari',$request->hari)->where('status','ISTIRAHAT')->get();
+        // if($break){
+        //     $startbreak = $break->jam_buka;
+        //     $endbreak = $break->jam_tutup;
+        //     // $duration = $promo->waktu_layanan;
+
+        //     $array_of_break = array ();
+        //     $start_break    = strtotime ($startbreak);
+        //     $nyarbreak	   = date("H:i", strtotime('-30 minutes', strtotime($endbreak)));
+        //     $end_break      = strtotime($nyarbreak);
+        //     $add_mins_break  = 30 * 60;
+
+        //     while ($start_break <= $end_break)
+        //     {
+        //         $array_of_break[] = date ("H:i", $start_break);
+        //         $start_break += $add_mins_break;
+        //     }
+        // }
+
         foreach($array_of_time as $value){
             $start_time    = strtotime($value);
-            $add_mins  = 30 * 60;
+            if($estimate){
+                $add_mins  = $estimate->estimasi_waktu * 60;
+            }else{
+                $add_mins  = 30 * 60;
+            }
+            
             $plus = $start_time + $add_mins;
             $estimasi = date("H:i", $plus);
             $is_disabled = false;
 
-            $penuh = $this->PenuhLayanan($request->layanan, $request->klinik, $request->tanggal, $value);
-            if($penuh == 'penuh'){
-                $bg = 'bg-red-turquoise';
-                $is_disabled = true;
-                $a = '';
-                $i = '<i class="fas fa-times-circle" style="margin-top: 0px !important;"></i>';
+            if($estimate){
+                $jumdu = $estimate->jumlah_du;
             }else{
-                $bg = 'bg-green-turquoise';
-                $a = '<a class="register" href="javascript:void(0)" data-id_klinik="' . $request->klinik . '" data-id_layanan="' . $request->layanan . '" data-tanggal="' . $request->tanggal . '" data-jam="' . $value . '">';
-                $i = '<i class="fas fa-clock" style="margin-top: 0px !important;"></i>';
+                $jumdu = 2;
+            }
+
+            $penuh = $this->PenuhLayanan($request->layanan, $request->klinik, $request->tanggal, $value, $jumdu);
+            $bg = '';
+            $a = '';
+            $i = '';
+
+            foreach ($breaks as $break) {
+                $start_break = strtotime($break->jam_buka);
+                if($estimate){
+                    $end_break = strtotime(date("H:i", strtotime('-'.$estimate->estimasi_waktu.' minutes', strtotime($break->jam_tutup))));
+                }else{
+                    $end_break = strtotime(date("H:i", strtotime('-30 minutes', strtotime($break->jam_tutup))));
+                }
+                
+
+                if ($start_time >= $start_break && $start_time <= $end_break) {
+                    // Waktu yang bersamaan dengan jadwal istirahat
+                    $bg = 'bg-yellow-turquoise';
+                    $is_disabled = true;
+                    $a = '';
+                    $i = '<i class="fas fa-times-circle" style="margin-top: 0px !important;"></i>';
+                    break; // Keluar dari loop breaks karena sudah ditemukan istirahat yang cocok
+                }
+            }
+            // if($break){
+            //     if($penuh == 'penuh'){
+            //         $bg = 'bg-red-turquoise';
+            //         $is_disabled = true;
+            //         $a = '';
+            //         $i = '<i class="fas fa-times-circle" style="margin-top: 0px !important;"></i>';
+            //     }
+            //     else if(in_array($value, $array_of_break)){
+            //         $bg = 'bg-yellow-turquoise';
+            //         $is_disabled = true;
+            //         $a = '';
+            //         $i = '<i class="fas fa-times-circle" style="margin-top: 0px !important;"></i>';
+            //     }
+            //     else{
+            //         $bg = 'bg-green-turquoise';
+            //         $a = '<a class="register" href="javascript:void(0)" data-id_klinik="' . $request->klinik . '" data-id_layanan="' . $request->layanan . '" data-tanggal="' . $request->tanggal . '" data-jam="' . $value . '">';
+            //         $i = '<i class="fas fa-clock" style="margin-top: 0px !important;"></i>';
+            //     }   
+            // }else{
+                // if($penuh == 'penuh'){
+                //     $bg = 'bg-red-turquoise';
+                //     $is_disabled = true;
+                //     $a = '';
+                //     $i = '<i class="fas fa-times-circle" style="margin-top: 0px !important;"></i>';
+                // }else{
+                //     $bg = 'bg-green-turquoise';
+                //     $a = '<a class="register" href="javascript:void(0)" data-id_klinik="' . $request->klinik . '" data-id_layanan="' . $request->layanan . '" data-tanggal="' . $request->tanggal . '" data-jam="' . $value . '">';
+                //     $i = '<i class="fas fa-clock" style="margin-top: 0px !important;"></i>';
+                // }
+            // }
+            if (empty($bg)) {
+                if ($penuh == 'penuh') {
+                    $bg = 'bg-red-turquoise';
+                    $is_disabled = true;
+                    $a = '';
+                    $i = '<i class="fas fa-times-circle" style="margin-top: 0px !important;"></i>';
+                } else {
+                    $bg = 'bg-green-turquoise';
+                    $a = '<a class="register" href="javascript:void(0)" data-id_klinik="' . $request->klinik . '" data-id_layanan="' . $request->layanan . '" data-tanggal="' . $request->tanggal . '" data-jam="' . $value . '">';
+                    $i = '<i class="fas fa-clock" style="margin-top: 0px !important;"></i>';
+                }
             }
 
             $html .= '<div class="tile '. $bg .'" style="width:130px; height:110px;" data-disabled="' . $is_disabled . '">
@@ -1467,17 +1567,31 @@ class FrontController extends Controller
         return response()->json($data);
     }
 
-    private function penuhLayanan($layanan, $klinik, $tanggal, $jam){
+    private function penuhLayanan($layanan, $klinik, $tanggal, $jam, $jumdu){
         $waktu = $jam.':00';
         $cek = T_register::where('id_layanan',$layanan)->where('id_klinik',$klinik)->where('tanggal',$tanggal)->where('jam',$waktu)->where('status',1)->count();
         
         $penuh = '';
 
-        if($cek >= 2){
+        if($cek >= $jumdu){
             $penuh = 'penuh';
         }
 
         return $penuh;
+
+    }
+
+    private function istirahat($klinik, $jam, $hari){
+        $waktu = $jam.':00';
+        $cek = $klinik = M_operasional::where('id_klinik',$klinik)->where('hari',$hari)->where('status','ISTIRAHAT')->first();
+
+        $break = '';
+
+        if($cek){
+            $break = 'break';
+        }
+
+        return $break;
 
     }
 
